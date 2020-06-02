@@ -42,7 +42,7 @@ function SignIn() {
         <InputText placeholder={translate('LOGIN_email')} onChangeText={(text:string) => {setEmail(text) }} icon='ios-at'/>
         <Password placeholder={translate('LOGIN_password')} onChangeText={(text:string) => setPassword(text)} style={styles.input} />
 
-        { (error.length==0) ? (<></>) : (<AlertError style={styles.alertError}>{error}</AlertError>)}
+        { (error.length==0) ? (<></>) : (<AlertError label={error}/>)}
         <BtnBlock
           onPress={() => handleSubmit()}
           loading={loading}

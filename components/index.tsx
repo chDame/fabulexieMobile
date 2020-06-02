@@ -39,7 +39,10 @@ export const Logo = (props:any) => (
 )*/
 
 export const AlertError = (props:any) => (
-  <Text style={styles.alertError} {...props} />
+  <View style={styles.alertError}>
+    <Ionicons name='md-alert' style={styles.errorIcon}></Ionicons>
+    <Text style={styles.alertErrorText} {...props}>{props.label}</Text>
+  </View>
 )
 
 export function InputText({...props}) {

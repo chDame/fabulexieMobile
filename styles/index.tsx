@@ -57,13 +57,23 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   alertError: {
-    padding: 8,
-    margin: 8,
+    flexDirection: "row",
+    padding: 6,
+    margin: 6,
     borderWidth: 1,
     borderColor: "#CC0000",
+    alignSelf: 'stretch',
+    backgroundColor: "#FFCCAA"
+  },
+  errorIcon: {
+    fontSize: 24,
+    color: "#990000",
+    marginRight: 10
+  },
+  alertErrorText: {
+    paddingTop:2,
     color: "#990000",
     fontWeight: "bold",
-    alignSelf: 'stretch',
   },
   input: {
     alignSelf: 'stretch',
