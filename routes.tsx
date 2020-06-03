@@ -12,15 +12,15 @@ import ProfileScreen from './pages/Profile';
 import HomeScreen from './pages/Home';
 import ReadScreen from './pages/Read';
 import { Ionicons } from '@expo/vector-icons';
-import { Image, Button, Text, TouchableOpacity } from 'react-native';
+import { Image, Button } from 'react-native';
 import CustomDrawerContent from './components/DrawerContent'
-import translate from './util/languageUtil';
+import translate from './services/i18n';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 
-function Main(props) {
+function Main(props:any) {
   return (
     <Stack.Navigator screenOptions={stackNavOptions} initialRouteName="Home">
       <Stack.Screen name="Home" options={{headerTitle: translate('HOME')}} component={HomeScreen} />
@@ -64,14 +64,11 @@ function LogoTitle() {
     />
   );
 }
-function ToggleDrawerButton(props) {
+function ToggleDrawerButton(props:any) {
   const navigation = useNavigation();
   return (
-    <Button
-      title={<Ionicons name="ios-menu" size={26} color="#fff" />}
-      color="transparent"
-      onPress={() => navigation.toggleDrawer()}
-    />
+    <Ionicons name="ios-menu" size={26} color="#fff" onPress={() => navigation.toggleDrawer()}
+    style={{padding:10}}/>
   );
 }
 const stackNavOptions = {

@@ -4,7 +4,8 @@ import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {useDispatch} from 'react-redux';
 import {signOut} from '../../store/features/auth/slice';
 import { Ionicons } from '@expo/vector-icons';
-import translate from '../../util/languageUtil';
+import translate from '../../services/i18n';
+
 
 const MyDrawerItem = (props:any) => (
   (props.icon!=null) ?

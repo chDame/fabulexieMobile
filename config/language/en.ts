@@ -1,4 +1,4 @@
-export default {
+export const en = {
    LOGIN_login: 'login',
    LOGIN_createAccount: 'Create an account',
    LOGIN_email: 'Email',

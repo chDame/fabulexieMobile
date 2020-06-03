@@ -34,8 +34,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   btnPrimary: {
-    flex: 1,
-    height: "55px",
+    height: 55,
     //borderRadius: "10px",
     backgroundColor: primary,
     alignItems: "center",

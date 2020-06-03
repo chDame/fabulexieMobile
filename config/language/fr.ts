@@ -1,4 +1,4 @@
-export default {
+export const fr = {
    LOGIN_login: 'Entrer',
    LOGIN_createAccount: 'Créer un compte',
    LOGIN_email: 'Email',

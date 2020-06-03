@@ -8,7 +8,7 @@ import {signIn} from '../../store/features/auth/slice';
 
 import { Container, Logo, AlertError, BtnBlock, Password, InputText, Link } from '../../components';
 import styles from '../../styles';
-import translate from '../../util/languageUtil';
+import translate from '../../services/i18n';
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -50,7 +50,7 @@ function SignIn() {
           title={translate('LOGIN_login')}
           buttonStyle={styles.btnPrimary}
         />
-        <Link onPress={() => navigation.navigate('SignUp')} style={[styles.mt1]}>{translate('LOGIN_createAccount')}</Link>
+        <Link onPress={() => navigation.navigate('SignUp')} style={styles.mt1}>{translate('LOGIN_createAccount')}</Link>
         
     </Container>
   );

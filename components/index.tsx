@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles, { iconColor, textColor } from '../styles';
-import { TextInput, Image, View } from 'react-native';
-import { Button, Text, Input } from 'react-native-elements';
+import { TextInput, Text, Image, View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { useLinkProps } from '@react-navigation/native';
 

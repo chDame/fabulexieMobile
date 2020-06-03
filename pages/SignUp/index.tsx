@@ -9,7 +9,7 @@ import {signUp} from '../../store/features/auth/slice';
 import { Container, Logo, AlertError, BtnBlock, Password, InputText, Link } from '../../components';
 import {IUser} from '../../store/features/auth/slice';
 import styles from '../../styles';
-import translate from '../../util/languageUtil';
+import translate from '../../services/i18n';
 
 const schema = Yup.object().shape({
   name: Yup.string().required(translate('REGISTER_error_firstname')),
@@ -45,13 +45,13 @@ function SignUp() {
         <InputText placeholder={translate('LOGIN_email')} onChangeText={(text:string) => setUser({...user, email: text})} icon='ios-at'/>
         <Password placeholder={translate('LOGIN_password')} onChangeText={(text:string) => setUser({...user, password: text})} style={styles.input} />
 
-        { (error.length==0) ? (<></>) : (<AlertError style={styles.alertError}>{error}</AlertError>)}
+        { (error.length==0) ? (<></>) : (<AlertError label={error}/>)}
         <BtnBlock onPress={() => handleSubmit()} loading={loading} icon="ios-checkmark-circle-outline"
           title={translate('REGISTER_register')}
           buttonStyle={styles.btnPrimary}
         />
         
-        <Link onPress={() => navigation.navigate('SignIn')} style={[styles.mt1]}>{translate('REGISTER_haveAnAccount')}</Link>
+        <Link onPress={() => navigation.navigate('SignIn')} style={styles.mt1}>{translate('REGISTER_haveAnAccount')}</Link>
         
     </Container>
   );
