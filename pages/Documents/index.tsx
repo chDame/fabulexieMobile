@@ -6,7 +6,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
 import {RootState} from '../../store/rootReducer';
-import {fetchDocuments, editDocument, IDocument} from '../../store/features/documentList/slice';
+import {fetchDocuments, IDocument} from '../../store/features/documentList/slice';
+import {setDocument} from '../../store/features/document/slice';
 
 import { Container } from '../../components';
 
@@ -27,21 +28,11 @@ function DocumentsScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function HandleRead(id: number) {
-    navigation.navigate('Read', {id});
+  function HandleRead(doc: IDocument) {
+    dispatch(setDocument({...doc}));
+    navigation.navigate('Read');
   }
 
-  function HandleAddTodo() {
-    navigation.navigate('Todo');
-  }
-
-  const handleDateFormat = (date: Date) => {
-    return date.toLocaleDateString()
-  };
-
-  const handleEditDocument = (task: IDocument) => {
-    dispatch(editDocument({...task}));
-  };
 
   return (
     <Container>
@@ -52,7 +43,7 @@ function DocumentsScreen() {
           data={data}
           keyExtractor={item => `${item.id}`}
           renderItem={({item}) => (
-            <TouchableOpacity style={docStyles.document} onPress={() => HandleRead(item.id)}>
+            <TouchableOpacity style={docStyles.document} onPress={() => HandleRead(item)}>
               <Text style={docStyles.docTitle}>{item.name}</Text>
               <Text style={docStyles.docDescription}>{item.description}</Text>
             </TouchableOpacity>

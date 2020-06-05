@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLinkProps } from '@react-navigation/native';
 
 export const Container = (props:any) => (
-  <View style={styles.container} {...props} />
+  <View style={[styles.container, props.style]} {...props} />
 )
 
 export const Btn = (props:any) => (
