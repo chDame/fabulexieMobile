@@ -42,7 +42,7 @@ const counterSlice = createSlice({
       state.data = action.payload;
     },
     signOutSuccess: (state: AuthState) => {
-      state = initialState;
+      state.data = {};
     },
   },
 });

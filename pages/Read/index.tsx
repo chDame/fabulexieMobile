@@ -3,6 +3,7 @@ import { WebView } from 'react-native-webview';
 import { ActivityIndicator, View, Button, Text, StyleSheet, Dimensions} from 'react-native';
 import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 
 import { readDocument, computePages } from '../../store/features/document/slice';
 
@@ -28,51 +29,48 @@ function Reader() {
     }
   }, []);
 
-  const webViewScript = `
-    getPages = function() { 
-      document.body.style.overflowY='hidden'
-      let docHeight = document.documentElement.scrollHeight;
-      let clientHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-      let nbPages = Math.ceil(docHeight/clientHeight)+1;
-      window.ReactNativeWebView.postMessage(document.documentElement.scrollHeight); 
-    }
-
-    getPages();true;
-  `;
-
  function scrollTo(y:number):void {
   if (view) {
-    view.injectJavaScript(`window.scrollTo(0, ${y}*Math.max(document.documentElement.clientHeight, window.innerHeight));true;`)
+    view.injectJavaScript(`openPage(${y});true;`)
   }
  }
   return (
     <Container style={styleReader.scrollView}>
       <WebView style={styleReader.view} 
         originWhitelist={['*']} ref={re=>setView(re)}         
-        source={{ uri: `https://6d865fcb4492.ngrok.io/documents/${doc.accessToken}/adapt/html/`, baseUrl:'' }}
+        source={{ uri: `https://042168a488d5.ngrok.io/documents/${doc.accessToken}/adapt/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`, baseUrl:'' }}
         automaticallyAdjustContentInsets = {true}
         scalesPageToFit={false}
                 scrollEnabled={false}
                 bounces={false}
                 onMessage={event => {
-                  dispatch(computePages(parseInt(event.nativeEvent.data), Dimensions.get('window').height));
+                  dispatch(computePages(parseInt(event.nativeEvent.data)));
                 }}
 
                 javaScriptEnabled={true}
-                injectedJavaScript ={webViewScript}
+                //injectedJavaScript ={webViewScript}
                 domStorageEnabled={true}
                     
       />
-      <View style={styleReader.footer}>
-              {(loading) ? (
+      {(loading) ? (
                 <ActivityIndicator size="large" color="#0000ff" />
-              ) : (
-                <>
-                <Text>Page {currentPage} of {nbPage}</Text>
-                <Button title='blop' onPress={() => {setCurrentPage(currentPage+1); scrollTo(currentPage)}}/>
-                </>
-              )}
+       ) : (
+      <View style={styleReader.footer}>
+                  <Ionicons
+                    name='ios-arrow-back'
+                    size={30}
+                    style={styleReader.btnIcon}
+                    onPress={() => {setCurrentPage(currentPage-1); scrollTo(currentPage-1)}}
+                  />
+                  <Text style={styleReader.nbPages}>Page {currentPage} / {nbPage}</Text>
+                  <Ionicons
+                    name='ios-arrow-forward'
+                    size={30}
+                    style={styleReader.btnIcon}
+                    onPress={() => {setCurrentPage(currentPage+1); scrollTo(currentPage+1)}}
+                  />
       </View>
+              )}
     </Container>
   )
 }
@@ -80,19 +78,28 @@ function Reader() {
 export const styleReader=StyleSheet.create({
   scrollView: {
     flex:1,
-    //height: (Dimensions.get('screen').height - 139),
     backgroundColor: "#f1e6d0",
     padding:0,
     margin:0
   },
   footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor:"#d7c3a7", 
     height:50
   },
+  btnIcon: {
+    padding: 10,
+    width: "25%",
+    textAlign: "center"
+  },
+  nbPages: {
+    padding: 10,
+  },
   view: {
-    //height: (Dimensions.get('window').height - 300),
     backgroundColor: "transparent",
     alignSelf: 'stretch',
+    marginTop: 0
   }
 })
 

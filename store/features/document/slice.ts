@@ -102,7 +102,8 @@ export const readDocument = (doc:IDocument): AppThunk => async dispatch => {
   }
 };
 
-export const computePages = (docHeight:number, screenHeight:number): AppThunk => async dispatch => {
-  console.log(docHeight);
-  dispatch(setNbPage(Math.ceil(docHeight/screenHeight)));
+export const computePages = (nbPages:number): AppThunk => async dispatch => {
+  console.log(nbPages);
+  //dispatch(setNbPage(Math.ceil(docHeight/screenHeight)));
+  dispatch(setNbPage(nbPages));
 };
