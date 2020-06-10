@@ -1,18 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import * as Navigation from '../../../services/Navigation';
+import {IDocument} from '../../model';
 
 import api from '../../../services/api';
 import {AppThunk} from '../../index';
-
-export interface IDocument {
-  id: number;
-  name: string;
-  title: string;
-  description: string;
-  ownerId: number
-  accessToken: string;
-  completed: boolean;
-}
 
 export interface DocumentListState {
   data: IDocument[];
@@ -30,8 +20,8 @@ export const initialState: DocumentListState = {
   error: null,
 };
 
-const counterSlice = createSlice({
-  name: 'counter',
+const serverListSlice = createSlice({
+  name: 'serverListSlice',
   initialState,
   reducers: {
     loadingStart: (state: DocumentListState) => {
@@ -49,31 +39,14 @@ const counterSlice = createSlice({
       state.deleting = false;
       state.error = action.payload;
     },
-    tasksLoadSuccess: (
+    docsLoadSuccess: (
       state: DocumentListState,
-      action: PayloadAction<IDocument[]>,
+      action: PayloadAction<any>,
     ) => {
       state.loading = false;
       state.data = action.payload.items;
-    },
-    addDocumentSuccess: (state: DocumentListState, action: PayloadAction<IDocument>) => {
-      state.editing = false;
-      state.data.push(action.payload);
-    },
-    editDocumentSuccess: (state: DocumentListState, action: PayloadAction<IDocument>) => {
-      const index = state.data.findIndex(
-        task => task.id === action.payload.id,
-      );
-      state.data[index] = action.payload;
-      state.editing = false;
-    },
-    deleteDocumentSuccess: (
-      state: DocumentListState,
-      action: PayloadAction<string>,
-    ) => {
-      state.data = state.data.filter(doc => doc.id !== action.payload);
-      state.deleting = false;
-    },
+    }
+
   },
 });
 
@@ -81,22 +54,19 @@ export const {
   loadingStart,
   editingStart,
   deletingStart,
-  tasksLoadSuccess,
-  addDocumentSuccess,
-  editDocumentSuccess,
-  deleteDocumentSuccess,
+  docsLoadSuccess,
   fail,
-} = counterSlice.actions;
+} = serverListSlice.actions;
 
-export default counterSlice.reducer;
+export default serverListSlice.reducer;
 
 export const fetchDocuments = (): AppThunk => async dispatch => {
   try {
     dispatch(loadingStart());
 
-    const {data} = await api.get<IDocument[]>('/documents');
+    const {data} = await api.get<any>('/documents');
 
-    dispatch(tasksLoadSuccess(data));
+    dispatch(docsLoadSuccess(data));
   } catch (err) {
     dispatch(fail(err.toString()));
   }

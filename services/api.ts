@@ -1,9 +1,7 @@
 import axios from 'axios';
-import {BACKEND} from 'react-native-dotenv';
-
+import { env } from '../env';
 const api = axios.create({
-  //baseURL: `${BACKEND}`,
-  baseURL: 'https://042168a488d5.ngrok.io'
+  baseURL: `${env.backend}`
 });
 
 export default api;

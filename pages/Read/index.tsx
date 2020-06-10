@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { WebView } from 'react-native-webview';
-import { ActivityIndicator, View, Button, Text, StyleSheet, Dimensions} from 'react-native';
+import { AsyncStorage, ActivityIndicator, View, Text, StyleSheet, Dimensions} from 'react-native';
+import * as FileSystem from 'expo-file-system';
 import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
-import { readDocument, computePages } from '../../store/features/document/slice';
-
+import { IDocument, Document } from '../../store/model';
+import { setTotalPages } from '../../store/features/document/slice';
  
 import { Container } from '../../components';
+import { env } from '../../env';
 
 function Reader() {
-  const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [view, setView] = useState<WebView | null>();
-
-
   const {doc, data, loading, nbPage} = useSelector((state: RootState) => ({
     doc: state.doc.doc,
     data: state.doc.data,
@@ -23,11 +20,62 @@ function Reader() {
     nbPage: state.doc.nbPage
   }));
 
-  useEffect(() => {
-    if (doc!=null && data==null) {
-      dispatch(readDocument(doc));
+  const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [view, setView] = useState<WebView | null>();
+  const [source, setSource] = useState<any>(null);
+  const [doing, setDoing] = useState<boolean>(false);
+
+  function receiveMessage(data:any) {
+    if (!isNaN(data)) {
+      dispatch(setTotalPages(parseInt(data)));
+      setDoing(false);
+    } else if (doc!=null) {
+      
+      storeDocument(doc);
     }
-  }, []);
+    
+  }
+
+  async function storeDocument(doc:IDocument) {
+    try {
+      let filePath = `${FileSystem.documentDirectory}${doc.id}.html`;
+      
+      let fileUrl = `${env.backend}/documents/${doc.accessToken}/saved/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`;
+      console.log(fileUrl);
+      let downloadObject = FileSystem.createDownloadResumable(
+        fileUrl,
+        filePath
+      );
+    
+      await downloadObject.downloadAsync();
+
+      let document = new Document();
+      document.nbPages = nbPage;
+      document.filePath = filePath;
+      Object.assign(document, doc);
+      await AsyncStorage.setItem(`@DocumentStore:${doc.id}`, JSON.stringify(document));
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+   const getSource = async () => {
+    if (doc?.filePath) {
+      var HTMLFile = await FileSystem.readAsStringAsync(doc.filePath);
+
+      setSource({ html: await FileSystem.readAsStringAsync(doc.filePath) });
+    } else {
+      setSource({ uri:  `${env.backend}/documents/${doc.accessToken}/adapt/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`})
+    }
+  }
+
+  
+  if (loading == true && !doing) {
+    setSource(null);
+    setDoing(true);
+    getSource();
+  }
 
  function scrollTo(y:number):void {
   if (view) {
@@ -36,25 +84,29 @@ function Reader() {
  }
   return (
     <Container style={styleReader.scrollView}>
+       {(!source || source==null) ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+       ) : (
       <WebView style={styleReader.view} 
         originWhitelist={['*']} ref={re=>setView(re)}         
-        source={{ uri: `https://042168a488d5.ngrok.io/documents/${doc.accessToken}/adapt/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`, baseUrl:'' }}
+        source={source}
+        allowFileAccess={true}
         automaticallyAdjustContentInsets = {true}
         scalesPageToFit={false}
                 scrollEnabled={false}
                 bounces={false}
                 onMessage={event => {
-                  dispatch(computePages(parseInt(event.nativeEvent.data)));
+                  receiveMessage(event.nativeEvent.data);
                 }}
 
                 javaScriptEnabled={true}
-                //injectedJavaScript ={webViewScript}
                 domStorageEnabled={true}
                     
-      />
-      {(loading) ? (
-                <ActivityIndicator size="large" color="#0000ff" />
-       ) : (
+      />)}
+      { source && source!=null ?
+      (loading ?
+        <ActivityIndicator size="large" color="#0000ff" />
+        :
       <View style={styleReader.footer}>
                   <Ionicons
                     name='ios-arrow-back'
@@ -69,8 +121,8 @@ function Reader() {
                     style={styleReader.btnIcon}
                     onPress={() => {setCurrentPage(currentPage+1); scrollTo(currentPage+1)}}
                   />
-      </View>
-              )}
+      </View>) : <View></View>
+      }
     </Container>
   )
 }

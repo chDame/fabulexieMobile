@@ -6,7 +6,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
 import {RootState} from '../../store/rootReducer';
-import {fetchDocuments, IDocument} from '../../store/features/documentList/slice';
+
+import {IDocument} from '../../store/model';
+import {fetchDocuments} from '../../store/features/documentList/slice';
 import {setDocument} from '../../store/features/document/slice';
 
 import { Container } from '../../components';
@@ -17,13 +19,14 @@ function DocumentsScreen() {
   const dispatch = useDispatch();
 
   const {data, loading} = useSelector((state: RootState) => ({
-    data: state.tasks.data,
-    loading: state.tasks.loading,
+    data: state.documents.data,
+    loading: state.documents.loading,
   }));
 
   const navigation = useNavigation();
 
   useEffect(() => {
+    console.log('bidipbidipbidip');
     dispatch(fetchDocuments());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
