@@ -26,9 +26,7 @@ function DocumentsScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    console.log('bidipbidipbidip');
     dispatch(fetchDocuments());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function HandleRead(doc: IDocument) {

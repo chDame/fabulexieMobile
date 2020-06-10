@@ -74,9 +74,8 @@ export const signIn = (
 	
 	const {data} = await api.post<IUser>('/authentication/login', 'email='+email+'&password='+ password);
 	
-    //const {data} = await api.post<ISession>('/authentication/login', {email, password});
-	console.log(data);
-    api.defaults.headers.Authorization = data.token;
+    
+	api.defaults.headers.Authorization = data.token;
 
     signOutInterceptor(dispatch);
 

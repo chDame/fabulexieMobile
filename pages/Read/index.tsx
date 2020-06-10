@@ -42,7 +42,7 @@ function Reader() {
       let filePath = `${FileSystem.documentDirectory}${doc.id}.html`;
       
       let fileUrl = `${env.backend}/documents/${doc.accessToken}/saved/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`;
-      console.log(fileUrl);
+      
       let downloadObject = FileSystem.createDownloadResumable(
         fileUrl,
         filePath
