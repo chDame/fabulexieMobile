@@ -8,8 +8,8 @@ import {useNavigation} from '@react-navigation/native';
 import {RootState} from '../../store/rootReducer';
 
 import {IDocument} from '../../store/model';
-import {fetchDocuments} from '../../store/features/documentList/slice';
-import {setDocument} from '../../store/features/document/slice';
+//import {fetchDocuments} from '../../store/features/remoteDocs/slice';
+import docService from '../../services/DocService';
 
 import { Container } from '../../components';
 
@@ -26,11 +26,11 @@ function DocumentsScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    dispatch(fetchDocuments());
+    dispatch(docService.fetchRemoteDocuments());
   }, []);
 
   function HandleRead(doc: IDocument) {
-    dispatch(setDocument({...doc}));
+    dispatch(docService.setDocument({...doc}));
     navigation.navigate('Read');
   }
 

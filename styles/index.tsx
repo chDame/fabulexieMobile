@@ -30,12 +30,13 @@ const styles = StyleSheet.create({
     right: 25
   },
   drawerItemFocused: {
-    backgroundColor: '#22aabb',
     color: 'white'
+  },
+  drawerItemDivFocused: {
+    backgroundColor: '#22aabb',
   },
   btnPrimary: {
     height: 55,
-    //borderRadius: "10px",
     backgroundColor: primary,
     alignItems: "center",
     justifyContent: "center"
@@ -78,8 +79,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     //height: 55,
     marginBottom: 10,
-    fontSize:16,
-    color: textColor,
     //padding: 15,
     //borderRadius: 3
     borderBottomColor: textColor

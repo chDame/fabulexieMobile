@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { WebView } from 'react-native-webview';
 import {NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
@@ -17,8 +16,7 @@ export default function App() {
       <NavigationContainer ref={navigationRef}>
         <StatusBar
           translucent={false}
-          barStyle="light-content"
-          backgroundColor="#ede5db"
+          backgroundColor="#b7a387"
         />
         <Routes />
       </NavigationContainer>

@@ -1,5 +1,6 @@
 export const en = {
    LOGIN_login: 'login',
+   LOGIN_offline: 'Offline access',
    LOGIN_createAccount: 'Create an account',
    LOGIN_email: 'Email',
    LOGIN_password: 'Password',
@@ -13,4 +14,5 @@ export const en = {
    PROFILE: 'My profile',
    DOCUMENTS: 'My books',
    SIGNOUT: 'Sign out',
+   ERROR_NETWORK: 'Server unreachable. Do you have internet access?'
  };

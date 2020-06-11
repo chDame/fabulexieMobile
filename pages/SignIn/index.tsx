@@ -4,11 +4,11 @@ import {useNavigation} from '@react-navigation/native';
 import * as Yup from 'yup';
 
 import {RootState} from '../../store/rootReducer';
-import {signIn} from '../../store/features/auth/slice';
 
 import { Container, Logo, AlertError, BtnBlock, Password, InputText, Link } from '../../components';
 import styles from '../../styles';
 import translate from '../../services/i18n';
+import authService from '../../services/AuthService'
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -20,7 +20,10 @@ const schema = Yup.object().shape({
 function SignIn() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const loading = useSelector((state: RootState) => state.auth.loading);
+
+  const {loading, requestError} = useSelector((state: RootState) => ({
+    loading:  state.auth.loading,
+    requestError: state.auth.error}));
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +32,7 @@ function SignIn() {
   const handleSubmit = async () => {
     try {
       await schema.validate({email, password});
-      dispatch(signIn(email, password));
+      dispatch(authService.signIn(email, password));
     } catch (error) {
       setError(error.message);
     }
@@ -43,14 +46,15 @@ function SignIn() {
         <Password placeholder={translate('LOGIN_password')} onChangeText={(text:string) => setPassword(text)} style={styles.input} />
 
         { (error.length==0) ? (<></>) : (<AlertError label={error}/>)}
+        { (!requestError || requestError.length==0) ? (<></>) : (<AlertError label={requestError}/>)}
         <BtnBlock
           onPress={() => handleSubmit()}
           loading={loading}
           icon="ios-log-in"
           title={translate('LOGIN_login')}
-          buttonStyle={styles.btnPrimary}
         />
         <Link onPress={() => navigation.navigate('SignUp')} style={styles.mt1}>{translate('LOGIN_createAccount')}</Link>
+        <Link onPress={() => dispatch(authService.offline())} style={styles.mt1}>{translate('LOGIN_offline')}</Link>
         
     </Container>
   );

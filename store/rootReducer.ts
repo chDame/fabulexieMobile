@@ -1,7 +1,7 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
-import documentsReadyReducer from './features/documentReady/slice';
-import documentsReducer from './features/documentList/slice';
+import documentsReadyReducer from './features/localDocs/slice';
+import documentsReducer from './features/remoteDocs/slice';
 import docReducer from './features/document/slice';
 import authReducer from './features/auth/slice';
 

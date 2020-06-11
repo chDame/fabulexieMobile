@@ -1,3 +1,3 @@
 export const env = {
-	backend: 'https://c11c6a16f871.ngrok.io'
+	backend: 'https://1abc865ecf71.ngrok.io'
 }

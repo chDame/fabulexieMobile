@@ -7,9 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import {RootState} from '../../store/rootReducer';
 import { IDocument } from '../../store/model';
-import {fetchDocuments} from '../../store/features/documentReady/slice';
-import {setDocument} from '../../store/features/document/slice';
-
+import docService from '../../services/DocService';
 import { Container } from '../../components';
 
 import docStyles from './styles';
@@ -25,14 +23,13 @@ function DocumentsScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    dispatch(fetchDocuments());
+    dispatch(docService.fetchLocalDocuments());
   }, []);
 
   function HandleRead(doc: IDocument) {
-    dispatch(setDocument({...doc}));
+    dispatch(docService.setDocument({...doc}));
     navigation.navigate('Read');
   }
-
 
   return (
     <Container>

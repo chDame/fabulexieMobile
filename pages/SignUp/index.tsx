@@ -4,10 +4,10 @@ import {useNavigation} from '@react-navigation/native';
 import * as Yup from 'yup';
 
 import {RootState} from '../../store/rootReducer';
-import {signUp} from '../../store/features/auth/slice';
+import authService from '../../services/AuthService';
 
 import { Container, Logo, AlertError, BtnBlock, Password, InputText, Link } from '../../components';
-import {IUser} from '../../store/features/auth/slice';
+import {IUser} from '../../store/model';
 import styles from '../../styles';
 import translate from '../../services/i18n';
 
@@ -31,7 +31,7 @@ function SignUp() {
     try {
       await schema.validate(user);
 
-      dispatch(signUp(user));
+      dispatch(authService.signUp(user));
     } catch (error) {
       setError(error.message);
     }

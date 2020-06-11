@@ -12,9 +12,10 @@ import ProfileScreen from './pages/Profile';
 import HomeScreen from './pages/Home';
 import ReadScreen from './pages/Read';
 import { Ionicons } from '@expo/vector-icons';
-import { Image, Button } from 'react-native';
+import { Image } from 'react-native';
 import CustomDrawerContent from './components/DrawerContent'
 import translate from './services/i18n';
+import authService from './services/AuthService';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -36,7 +37,7 @@ function Routes() {
     (state: RootState) => state.auth.data.token,
   );
 
-  return !authenticated ? (
+  return !authService.isAuthenticated() ? (
     <Stack.Navigator initialRouteName="SignIn">
       <Stack.Screen
         name="SignIn"

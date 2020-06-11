@@ -1,23 +1,36 @@
+export class LetterRule {
+  id?: number;
+  letters?: string[];
+  lettersString?: string;
+  color?: string;
+  backgroundColor?: string;
+  italic: boolean = false;
+  bold: boolean = false;
+  underlined: boolean = false;
+  upperCase: boolean = false;
+}
+export class Config {
+  id?: number;
+  name?: string;
+  letterRules: LetterRule[] = [];
+}
+
+export interface IUser {
+  id?: number;
+  name?: string;
+  email?: string;
+  password?: string;
+  token?: string;
+  activeConfig?: Config;
+}
+
 export interface IDocument {
-    id: number;
-    name: string;
-    title: string;
-    description: string;
-    ownerId: number;
-    accessToken: string;
-    completed: boolean;
-    nbPages: number;
-    filePath: string;
-  }
-  
-  export class Document implements IDocument {
-    id: number = 0;
-    name: string = '';
-    title: string = '';
-    description: string  = '';
-    ownerId: number = 0
-    accessToken: string = '';
-    completed: boolean = false;
-    nbPages: number = 0;
-    filePath: string = '';
-  }
+  id: number;
+  name?: string;
+  title?: string;
+  description?: string;
+  ownerId?: number;
+  accessToken?: string;
+  nbPages?: number;
+  filePath?: string;
+}

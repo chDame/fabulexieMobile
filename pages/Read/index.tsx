@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { WebView } from 'react-native-webview';
-import { AsyncStorage, ActivityIndicator, View, Text, StyleSheet, Dimensions} from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet, Dimensions} from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
-import { IDocument, Document } from '../../store/model';
-import { setTotalPages } from '../../store/features/document/slice';
- 
+import docService from '../../services/DocService';
+
 import { Container } from '../../components';
 import { env } from '../../env';
 
@@ -28,37 +27,14 @@ function Reader() {
 
   function receiveMessage(data:any) {
     if (!isNaN(data)) {
-      dispatch(setTotalPages(parseInt(data)));
+      dispatch(docService.setTotalPages(parseInt(data)));
       setDoing(false);
     } else if (doc!=null) {
       
-      storeDocument(doc);
-    }
-    
+      dispatch(docService.storeDocument(doc, nbPage));
+    }    
   }
 
-  async function storeDocument(doc:IDocument) {
-    try {
-      let filePath = `${FileSystem.documentDirectory}${doc.id}.html`;
-      
-      let fileUrl = `${env.backend}/documents/${doc.accessToken}/saved/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`;
-      
-      let downloadObject = FileSystem.createDownloadResumable(
-        fileUrl,
-        filePath
-      );
-    
-      await downloadObject.downloadAsync();
-
-      let document = new Document();
-      document.nbPages = nbPage;
-      document.filePath = filePath;
-      Object.assign(document, doc);
-      await AsyncStorage.setItem(`@DocumentStore:${doc.id}`, JSON.stringify(document));
-    } catch (error) {
-      console.warn(error);
-    }
-  };
 
    const getSource = async () => {
     if (doc?.filePath) {
@@ -70,7 +46,6 @@ function Reader() {
     }
   }
 
-  
   if (loading == true && !doing) {
     setSource(null);
     setDoing(true);
@@ -84,44 +59,42 @@ function Reader() {
  }
   return (
     <Container style={styleReader.scrollView}>
-       {(!source || source==null) ? (
-          <ActivityIndicator size="large" color="#0000ff" />
-       ) : (
-      <WebView style={styleReader.view} 
-        originWhitelist={['*']} ref={re=>setView(re)}         
-        source={source}
-        allowFileAccess={true}
-        automaticallyAdjustContentInsets = {true}
-        scalesPageToFit={false}
-                scrollEnabled={false}
-                bounces={false}
-                onMessage={event => {
-                  receiveMessage(event.nativeEvent.data);
-                }}
-
-                javaScriptEnabled={true}
-                domStorageEnabled={true}
-                    
-      />)}
-      { source && source!=null ?
-      (loading ?
+      {(!source || source==null) ?
         <ActivityIndicator size="large" color="#0000ff" />
+      :
+        <WebView style={styleReader.view} 
+          originWhitelist={['*']} ref={re=>setView(re)}         
+          source={source}
+          allowFileAccess={true}
+          automaticallyAdjustContentInsets = {true}
+          scalesPageToFit={false}
+          scrollEnabled={false}
+          bounces={false}
+          onMessage={event => {
+            receiveMessage(event.nativeEvent.data);
+          }}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}                  
+        />
+      }
+      { source && source!=null ?
+        (loading ?
+          <ActivityIndicator size="large" color="#0000ff" />
         :
-      <View style={styleReader.footer}>
-                  <Ionicons
-                    name='ios-arrow-back'
-                    size={30}
-                    style={styleReader.btnIcon}
-                    onPress={() => {setCurrentPage(currentPage-1); scrollTo(currentPage-1)}}
-                  />
-                  <Text style={styleReader.nbPages}>Page {currentPage} / {nbPage}</Text>
-                  <Ionicons
-                    name='ios-arrow-forward'
-                    size={30}
-                    style={styleReader.btnIcon}
-                    onPress={() => {setCurrentPage(currentPage+1); scrollTo(currentPage+1)}}
-                  />
-      </View>) : <View></View>
+          <View style={styleReader.footer}>
+            <Ionicons name='ios-arrow-back' size={30}
+              style={styleReader.btnIcon}
+              onPress={() => {setCurrentPage(currentPage-1); scrollTo(currentPage-1)}}
+            />
+            <Text style={styleReader.nbPages}>Page {currentPage} / {nbPage}</Text>
+            <Ionicons name='ios-arrow-forward' size={30}
+              style={styleReader.btnIcon}
+              onPress={() => {setCurrentPage(currentPage+1); scrollTo(currentPage+1)}}
+            />
+          </View>
+        ) 
+      :
+        <View></View>
       }
     </Container>
   )

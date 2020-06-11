@@ -1,5 +1,6 @@
 export const fr = {
    LOGIN_login: 'Entrer',
+   LOGIN_offline: 'Accès sans connexion',
    LOGIN_createAccount: 'Créer un compte',
    LOGIN_email: 'Email',
    LOGIN_password: 'Mot de passe',
@@ -13,4 +14,5 @@ export const fr = {
    PROFILE: 'Mon profile',
    DOCUMENTS: 'Mes lectures',
    SIGNOUT: 'Déconnexion',
+   ERROR_NETWORK: 'Serveur inaccessible. Êtes vous connecté ?'
  };

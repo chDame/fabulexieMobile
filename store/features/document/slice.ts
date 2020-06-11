@@ -59,11 +59,11 @@ export const {
 } = docSlice.actions;
 
 export default docSlice.reducer;
-
+/*
 export const setDocument = (doc:IDocument): AppThunk => async dispatch => {
   dispatch(setCurrentDocument(doc));
 };
 
 export const setTotalPages = (nbPages:number): AppThunk => async dispatch => {
     dispatch(setNbPage(nbPages));
-};
+};*/

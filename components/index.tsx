@@ -50,7 +50,7 @@ export function InputText({...props}) {
   return(
     <Input {...props} 
       style={styles.input}
-      inputStyle={{color:textColor}}
+      inputStyle={{color:textColor, fontSize: 16}}
       onFocus={() => setFocus(true)}
       onBlur={() =>setFocus(false)}
       inputContainerStyle={focus? styles.inputFocused : styles.input}
@@ -65,16 +65,6 @@ export function InputText({...props}) {
       }/>
     )
 }
-/*
-export const InputTextIcon = (props:any) => (
-  <InputText leftIcon={
-    <Ionicons
-      name={props.icon}
-      size={24}
-      color={iconColor}
-    />
-  } {...props} />
-)*/
 
 export const Password = (props:any) => (
   <InputText icon='ios-key' secureTextEntry {...props} />
