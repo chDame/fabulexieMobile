@@ -1,18 +1,13 @@
 import React, {useEffect} from 'react';
-import {TouchableOpacity, FlatList, ActivityIndicator, Text, StyleSheet} from 'react-native';
-
-import {useDispatch, useSelector} from 'react-redux';
-
 import {useNavigation} from '@react-navigation/native';
-
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/rootReducer';
 
 import {IDocument} from '../../store/model';
-//import {fetchDocuments} from '../../store/features/remoteDocs/slice';
 import docService from '../../services/DocService';
 
+import {TouchableOpacity, FlatList, ActivityIndicator, Text } from 'react-native';
 import { Container } from '../../components';
-
 import docStyles from './styles';
 
 function DocumentsScreen() {

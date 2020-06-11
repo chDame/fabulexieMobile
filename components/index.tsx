@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles, { iconColor, textColor } from '../styles';
 import { TextInput, Text, Image, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useLinkProps } from '@react-navigation/native';
 
 export const Container = (props:any) => (
@@ -17,6 +17,19 @@ export const Btn = (props:any) => (
         size={24}
         color="white"
         style={styles.btnIcon}
+      />
+      :{}
+    }
+  />
+)
+
+export const BtnFa = (props:any) => (
+  <Button {...props} 
+    icon={props.icon ? 
+      <FontAwesome
+        name={props.icon}
+        size={24}
+        color="white"
       />
       :{}
     }

@@ -12,7 +12,9 @@ export const fr = {
    REGISTER_haveAnAccount: 'J\'ai déjà un compte',
    HOME: 'Acceuil',
    PROFILE: 'Mon profile',
+   PROFILE_uppercase: 'Majuscule',
    DOCUMENTS: 'Mes lectures',
    SIGNOUT: 'Déconnexion',
-   ERROR_NETWORK: 'Serveur inaccessible. Êtes vous connecté ?'
+   ERROR_NETWORK: 'Serveur inaccessible. Êtes vous connecté ?',
+   SAVE: 'Enregistrer'
  };

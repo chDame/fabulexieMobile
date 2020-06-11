@@ -2,6 +2,8 @@ import { useSelector } from 'react-redux';
 import { AppThunk } from '../store';
 import { RootState } from '../store/rootReducer';
 import { authStart, signInSuccess, signOutSuccess, fail } from '../store/features/auth/slice';
+import { setCurrentProfile } from '../store/features/profile/slice';
+import profileService from './ProfileService';
 import { IUser } from '../store/model';
 import api from './api';
 import { AsyncStorage } from 'react-native';
@@ -32,6 +34,9 @@ export class AuthService {
           api.defaults.headers.Authorization = data.token;
           await AsyncStorage.setItem('@UserToken', data.token);
         }
+        if (data.activeConfig) {
+          dispatch(profileService.loadProfile(data.activeConfig));
+        }
         dispatch(signInSuccess(data));
       } catch (error) {
         console.log('Error', error.message);
@@ -49,6 +54,9 @@ export class AuthService {
       if (data.token) {
         api.defaults.headers.Authorization = data.token;
         await AsyncStorage.setItem('@UserToken', data.token);
+      }
+      if (data.activeConfig) {
+        dispatch(profileService.loadProfile(data.activeConfig));
       }
       dispatch(signInSuccess(data));
     } catch (error) {
@@ -81,7 +89,7 @@ export class AuthService {
     try {
       api.defaults.headers.Authorization = '';
       await AsyncStorage.removeItem('@UserToken');
-      
+      dispatch(profileService.cleanProfile());
       dispatch(signOutSuccess());
     } catch (err) {
       dispatch(fail(err.toString()));

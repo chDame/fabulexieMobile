@@ -12,7 +12,9 @@ export const en = {
    REGISTER_haveAnAccount: 'I already have an account',
    HOME: 'Home',
    PROFILE: 'My profile',
+   PROFILE_uppercase: 'Uppercase',
    DOCUMENTS: 'My books',
    SIGNOUT: 'Sign out',
-   ERROR_NETWORK: 'Server unreachable. Do you have internet access?'
+   ERROR_NETWORK: 'Server unreachable. Do you have internet access?',
+   SAVE: 'Save'
  };

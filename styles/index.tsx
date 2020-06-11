@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, withTheme } from 'react-native-elements';
 
 export const primary = "#22aabb";
 export const textColor = "#553322";
@@ -86,6 +86,27 @@ const styles = StyleSheet.create({
   inputFocused: {
     borderBottomColor: "#33bbcc",
     borderBottomWidth: 2
+  },
+  buttonGroup: {
+    flexDirection: "row",
+    borderRadius: 5,
+    backgroundColor: primary,
+  },
+  buttonGroupBtn: {
+    borderRadius: 0,
+    backgroundColor: 'transparent',
+    borderColor: 'white',
+    borderRightWidth: 1,
+    height:40,
+    minWidth:40
+  },
+  buttonGroupBtnPressed: {
+    borderRadius: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderColor: 'white',
+    borderRightWidth: 1,
+    height:40,
+    minWidth:40
   }
 });
 

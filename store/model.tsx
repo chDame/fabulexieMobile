@@ -1,18 +1,18 @@
-export class LetterRule {
+export interface ILetterRule {
   id?: number;
   letters?: string[];
   lettersString?: string;
   color?: string;
   backgroundColor?: string;
-  italic: boolean = false;
-  bold: boolean = false;
-  underlined: boolean = false;
-  upperCase: boolean = false;
+  italic?: boolean;
+  bold?: boolean;
+  underlined?: boolean;
+  upperCase?: boolean;
 }
-export class Config {
+export interface IConfig {
   id?: number;
   name?: string;
-  letterRules: LetterRule[] = [];
+  letterRules?: ILetterRule[];
 }
 
 export interface IUser {
@@ -21,7 +21,7 @@ export interface IUser {
   email?: string;
   password?: string;
   token?: string;
-  activeConfig?: Config;
+  activeConfig?: IConfig;
 }
 
 export interface IDocument {

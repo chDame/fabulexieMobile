@@ -12,9 +12,8 @@ import { Container } from '../../components';
 import { env } from '../../env';
 
 function Reader() {
-  const {doc, data, loading, nbPage} = useSelector((state: RootState) => ({
+  const {doc, loading, nbPage} = useSelector((state: RootState) => ({
     doc: state.doc.doc,
-    data: state.doc.data,
     loading: state.doc.loading,
     nbPage: state.doc.nbPage
   }));
@@ -40,7 +39,7 @@ function Reader() {
     if (doc?.filePath) {
       var HTMLFile = await FileSystem.readAsStringAsync(doc.filePath);
 
-      setSource({ html: await FileSystem.readAsStringAsync(doc.filePath) });
+      setSource({ html: HTMLFile });
     } else {
       setSource({ uri:  `${env.backend}/documents/${doc.accessToken}/adapt/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`})
     }
