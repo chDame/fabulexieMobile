@@ -40,7 +40,7 @@ function Reader() {
       var HTMLFile = await FileSystem.readAsStringAsync(doc.filePath);
 
       setSource({ html: HTMLFile });
-    } else {
+    } else if (doc) {
       setSource({ uri:  `${env.backend}/documents/${doc.accessToken}/adapt/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`})
     }
   }

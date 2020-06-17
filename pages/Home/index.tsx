@@ -41,7 +41,8 @@ function DocumentsScreen() {
           keyExtractor={item => `${item.id}`}
           renderItem={({item}) => (
             <TouchableOpacity style={docStyles.document} onPress={() => HandleRead(item)}>
-              <Text style={docStyles.docTitle}>{item.name}</Text>
+             <Text style={docStyles.docTitle}>{item.id}</Text>
+               <Text style={docStyles.docTitle}>{item.name}</Text>
               <Text style={docStyles.docDescription}>{item.description}</Text>
             </TouchableOpacity>
           )}

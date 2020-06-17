@@ -38,7 +38,6 @@ export class ProfileService {
         }
       }
     }
-    console.log(profile);
     await api.put(`/users/${user.id}/configs/${profile.id}`, profile);
     this.loadProfile(profile);
   }

@@ -1,10 +1,8 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import {RootState} from './store/rootReducer';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import DocumentsScreen from './pages/Documents';
@@ -33,9 +31,6 @@ function Main(props:any) {
 }
 
 function Routes() {
-  const authenticated = useSelector(
-    (state: RootState) => state.auth.data.token,
-  );
 
   return !authService.isAuthenticated() ? (
     <Stack.Navigator initialRouteName="SignIn">

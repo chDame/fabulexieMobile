@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { AppThunk } from '../store';
+import store, { AppThunk } from '../store';
 import { RootState } from '../store/rootReducer';
 import { authStart, signInSuccess, signOutSuccess, fail } from '../store/features/auth/slice';
 import { setCurrentProfile } from '../store/features/profile/slice';
@@ -15,9 +15,12 @@ export class AuthService {
     (state: RootState) => state.auth.data.token,
   );
 
+  getUserId = ():number => {
+    return store.getState().auth.data.id;
+  }
   offline = (): AppThunk => async dispatch => {
     dispatch(authStart());
-    const data = { id:-1, name: 'offline', token: 'offline' };
+    const data = { id:-1, name: 'offline', email: 'offline', token: 'offline' };
        
     dispatch(signInSuccess(data));
   }
@@ -29,7 +32,7 @@ export class AuthService {
         dispatch(authStart());
         api.defaults.headers.Authorization = token;    
         const {data} = await api.post<IUser>('/authentication/loginWithToken');
-             
+    
         if (data.token) {
           api.defaults.headers.Authorization = data.token;
           await AsyncStorage.setItem('@UserToken', data.token);
@@ -50,7 +53,7 @@ export class AuthService {
       dispatch(authStart());
           
       const {data} = await api.post<IUser>('/authentication/login', 'email='+email+'&password='+ password);
-           
+ 
       if (data.token) {
         api.defaults.headers.Authorization = data.token;
         await AsyncStorage.setItem('@UserToken', data.token);

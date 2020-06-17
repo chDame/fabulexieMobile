@@ -3,6 +3,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 import { Button, withTheme } from 'react-native-elements';
 
 export const primary = "#22aabb";
+export const secondary = "#666666";
 export const textColor = "#553322";
 export const iconColor = "#553322";
 
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: "5%",
     paddingRight: "5%",
+    textAlignVertical: "top" 
   },
   logo: {
     width: 72,
@@ -35,11 +37,24 @@ const styles = StyleSheet.create({
   drawerItemDivFocused: {
     backgroundColor: '#22aabb',
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "space-evenly"
+  },
   btnPrimary: {
     height: 55,
     backgroundColor: primary,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    margin: 5
+  },
+  btnSecondary: {
+    height: 55,
+    backgroundColor: secondary,
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 5
   },
   btnIcon: {
     paddingTop: 4,

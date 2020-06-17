@@ -2,8 +2,8 @@ export interface ILetterRule {
   id?: number;
   letters?: string[];
   lettersString?: string;
-  color?: string;
-  backgroundColor?: string;
+  color?: string | null;
+  backgroundColor?: string | null;
   italic?: boolean;
   bold?: boolean;
   underlined?: boolean;
@@ -16,14 +16,25 @@ export interface IConfig {
 }
 
 export interface IUser {
-  id?: number;
-  name?: string;
-  email?: string;
+  id: number;
+  name: string;
+  email: string;
   password?: string;
   token?: string;
   activeConfig?: IConfig;
 }
-
+export interface ISpaceAccess {
+  id: number;
+  space: ISpace;
+}
+export interface ISpace {
+  id: number;
+  name: string;
+}
+export interface IDirectory {
+  id: number;
+  name: string;
+}
 export interface IDocument {
   id: number;
   name?: string;

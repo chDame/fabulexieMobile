@@ -27,7 +27,6 @@ const counterSlice = createSlice({
     signInSuccess: (state: AuthState, action: PayloadAction<IUser>) => {
       state.loading = false;
       state.data = action.payload;
-      console.log(state.data);
     },
     signOutSuccess: (state: AuthState) => {
       state.data = {};
