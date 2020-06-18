@@ -13,6 +13,7 @@ const BtnBlock = (props:any) => (
 
 const styles = StyleSheet.create({
   container: {
+    alignSelf: 'stretch',
     backgroundColor: "#f1e6d0",
     flex: 1,
     alignItems: "center",

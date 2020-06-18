@@ -42,7 +42,7 @@ export class AuthService {
         }
         dispatch(signInSuccess(data));
       } catch (error) {
-        console.log('Error', error.message);
+        console.warn('Error', error.message);
         dispatch(fail(error.toString()));
       }
     }
@@ -71,7 +71,7 @@ export class AuthService {
         dispatch(fail(translate('ERROR_NETWORK')));
       } else {
         // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
+        console.warn('Error', error.message);
         dispatch(fail(error.toString()));
       }
     }

@@ -32,6 +32,12 @@ const availableDocsSlice = createSlice({
         state.ids = state.ids.concat(state.data[i].id);
       }
     },
+    updateDocument: (state: DocumentListState, action: PayloadAction<IDocument>) => {
+      let index = state.ids.indexOf(action.payload.id);
+      if (index>=0) {
+        Object.assign(state.data[index], action.payload);
+      }
+    },
     addLocalDocument: (state: DocumentListState, action: PayloadAction<IDocument>) => {
       let index = state.ids.indexOf(action.payload.id);
       if (index<0) {
@@ -52,6 +58,7 @@ export const {
   localDocsLoading,
   localDocsLoadSuccess,
   addLocalDocument,
+  updateDocument,
   localDocsFail,
 } = availableDocsSlice.actions;
 

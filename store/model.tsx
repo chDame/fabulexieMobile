@@ -41,7 +41,10 @@ export interface IDocument {
   title?: string;
   description?: string;
   ownerId?: number;
-  accessToken?: string;
+  accessToken: string;
   nbPages?: number;
   filePath?: string;
+  coverPath?:string;
+  progression?: number;
+  lastAccess?: number;
 }

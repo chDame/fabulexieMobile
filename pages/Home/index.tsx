@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {TouchableOpacity, FlatList, ActivityIndicator, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity, FlatList, ActivityIndicator, Text, Image, View, StyleSheet} from 'react-native';
 
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -32,7 +32,7 @@ function DocumentsScreen() {
   }
 
   return (
-    <Container>
+    <Container style={{alignSelf: 'stretch'}}>
       {loading ? (
         <ActivityIndicator size="large" color="#ff00ff" />
       ) : (data.length > 0 ? (
@@ -41,9 +41,21 @@ function DocumentsScreen() {
           keyExtractor={item => `${item.id}`}
           renderItem={({item}) => (
             <TouchableOpacity style={docStyles.document} onPress={() => HandleRead(item)}>
-             <Text style={docStyles.docTitle}>{item.id}</Text>
-               <Text style={docStyles.docTitle}>{item.name}</Text>
-              <Text style={docStyles.docDescription}>{item.description}</Text>
+                { item.coverPath ? 
+                  //<Text >{item.coverPath}</Text>
+                  <Image style={docStyles.cover} source={{uri: item.coverPath}}/>
+                  :
+                  <Image style={docStyles.cover} source={require('../../assets/fabulexie.png')}/>
+                }
+                <View style={docStyles.detail}>
+                  <View style={docStyles.titleProgression}>
+                    <Text style={docStyles.docTitle}>{item.title}</Text>
+                    <Text style={docStyles.progression}>page {item.progression} / {item.nbPages}</Text>
+                  </View>
+                  <Text style={docStyles.docDescription}>{item.description}</Text>
+                  <Text style={docStyles.progression}>{item.lastAccess ? new Date(item.lastAccess).toLocaleDateString('fr-FR') : ''}</Text>
+                </View>
+                
             </TouchableOpacity>
           )}
         />

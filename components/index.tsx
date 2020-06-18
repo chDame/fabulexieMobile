@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles, { iconColor, textColor } from '../styles';
 import { TextInput, Text, Image, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useLinkProps } from '@react-navigation/native';
 
 export const Container = (props:any) => (
@@ -38,6 +38,21 @@ export const BtnFa = (props:any) => (
         name={props.icon}
         size={24}
         color="white"
+      />
+      :{}
+    }
+  />
+)
+
+export const BtnMat = (props:any) => (
+  <Button 
+    {...props} 
+    icon={props.icon ? 
+      <MaterialCommunityIcons
+        name={props.icon}
+        size={36}
+        color="white"
+        style={{marginBottom:6}}
       />
       :{}
     }

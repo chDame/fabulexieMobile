@@ -5,18 +5,18 @@ export interface DocumentState {
   doc: IDocument | null;
   loading: boolean;
   nbPage: number;
-  currentPage: number;
+  //currentPage: number;
   error: string | null;
-  filePath: string | null;
+  //filePath: string | null;
 }
 
 export const initialState: DocumentState = {
   doc: null,
   loading: false,
   nbPage: 1,
-  currentPage: 1,
+  //currentPage: 1,
   error: null,
-  filePath: null,
+  //filePath: null,
 };
 
 const docSlice = createSlice({
@@ -27,8 +27,8 @@ const docSlice = createSlice({
       state: DocumentState, 
       doc: PayloadAction<IDocument>
     ) => {
-      state.nbPage = 1;
-      state.currentPage=1;
+      //state.nbPage = 1;
+      //state.currentPage=1;
       state.loading = true;
       state.doc = doc.payload;
     },

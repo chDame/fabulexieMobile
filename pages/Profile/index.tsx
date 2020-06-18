@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { ILetterRule, IConfig } from '../../store/model';
 import { TouchableOpacity, SafeAreaView, Text, FlatList, Modal, View, StyleSheet, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
-import { Container, BtnSecondary, BtnPrimary, BtnFa, BtnBlock, InputText } from '../../components';
+import { Container, BtnSecondary, BtnPrimary, BtnFa, BtnMat, InputText } from '../../components';
 import { Button } from 'react-native-elements'
 import translate from '../../services/i18n';
 import styles from '../../styles';
@@ -62,36 +62,35 @@ function ProfileScreen() {
 
   return (
     <Container>
-      <SafeAreaView style={{flex: 1}}>
+     
       <FlatList<ILetterRule> extraData={change}
-          data={profileEdit?.letterRules}
-          keyExtractor={item => `${item.id}`}
-          renderItem={({item, index}) => (
-            <TouchableOpacity>
-              <InputText onChangeText={(text:string) => setLetters(item, text) } inputStyle={{color: item.color ? item.color : 'black', backgroundColor: item.backgroundColor ? item.backgroundColor : 'transparent'}} defaultValue={`${item.lettersString}`}/>
-              <View style={styles.buttonGroup}>
-                <BtnFa icon='italic' onPress={ () => italic(item)} buttonStyle={item.italic ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-                <BtnFa icon='bold' onPress={ () => bold(item)}  buttonStyle={item.bold ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-                <BtnFa icon='underline' onPress={ () => underline(item)}  buttonStyle={item.underlined ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-                <Button title={translate('PROFILE_uppercase')} onPress={ () => uppercase(item)} buttonStyle={item.upperCase ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-                <BtnFa icon='paint-brush' onPress={ () => {setRule(item); setFrontColor(true); setColorPickerModal(true)}} buttonStyle={item.color ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn}/>
-                <BtnFa icon='fill-drip' onPress={ () => {setRule(item); setFrontColor(false); setColorPickerModal(true)}} buttonStyle={item.backgroundColor ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-                <BtnFa icon='trash' onPress={ () => {removeRule(index); }} buttonStyle={styles.buttonGroupBtn}/>
-              </View>
-            </TouchableOpacity>
-          )}
+        removeClippedSubviews={false}
+        data={profileEdit?.letterRules}
+        keyExtractor={item => `${item.id}`}
+        renderItem={({item, index}) => (
+          <TouchableOpacity>
+            <InputText onChangeText={(text:string) => setLetters(item, text) } inputStyle={{color: item.color ? item.color : 'black', backgroundColor: item.backgroundColor ? item.backgroundColor : 'transparent'}} defaultValue={`${item.lettersString}`}/>
+            <View style={styles.buttonGroup}>
+              <BtnFa icon='italic' onPress={ () => italic(item)} buttonStyle={item.italic ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnFa icon='bold' onPress={ () => bold(item)}  buttonStyle={item.bold ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnFa icon='underline' onPress={ () => underline(item)}  buttonStyle={item.underlined ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnMat icon='format-letter-case-upper' onPress={ () => uppercase(item)} buttonStyle={item.upperCase ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnFa icon='paint-brush' onPress={ () => {setRule(item); setFrontColor(true); setColorPickerModal(true)}} buttonStyle={item.color ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn}/>
+              <BtnFa icon='fill-drip' onPress={ () => {setRule(item); setFrontColor(false); setColorPickerModal(true)}} buttonStyle={item.backgroundColor ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnFa icon='trash' onPress={ () => {removeRule(index); }} buttonStyle={styles.buttonGroupBtn}/>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+      <View style={[styles.row, styles.mt1]}>
+        <BtnPrimary icon='ios-add-circle-outline' onPress={ () => addRule()} title="Ajouter règle"/>
+        <BtnPrimary
+          onPress={() => saveProfile()}
+          loading={loading}
+          icon="md-save"
+          title={translate('SAVE')}
         />
-        <View style={[styles.row, styles.mt1]}>
-          <BtnPrimary icon='ios-add-circle-outline' onPress={ () => addRule()} title="Ajouter règle"/>
-          <BtnPrimary
-            onPress={() => saveProfile()}
-            loading={loading}
-            icon="md-save"
-            title={translate('SAVE')}
-          />
-        </View>
-      </SafeAreaView >
-
+      </View>
       
       <Modal
         animationType="slide"

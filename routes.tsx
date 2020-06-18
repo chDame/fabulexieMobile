@@ -75,7 +75,6 @@ const stackNavOptions = {
   headerTitleStyle: {
     fontWeight: 'bold',
   },
-  
   headerTitleAlign: 'center',
   headerLeft: () => ( <ToggleDrawerButton/> ),
   headerRight: () => (<LogoTitle/>)

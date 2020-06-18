@@ -5,22 +5,46 @@ const docStyles = StyleSheet.create({
   document: {
     flexDirection: "row",
     alignItems: "center",
+    alignSelf: 'stretch',
     marginBottom: 10,
-    borderWidth: 1,
-    borderRadius:3,
-    borderColor: textColor,
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
     padding: 5
   },
+  detail: {
+    flex: 1,
+    alignSelf: 'stretch',
+    textAlignVertical: "top",
+  },
+  titleProgression: {
+    flexDirection: "row",
+    alignSelf: 'stretch',
+    textAlignVertical: "top"
+  },
   docTitle: {
+    flex: 1,
     fontSize: 16,
     fontWeight: "bold",
     color: textColor,
-    marginBottom: 5
+    marginBottom: 5,
   },
   docDescription: {
     fontStyle: "italic",
     color: textColor,
-  }
+  },
+  progression: {
+    fontStyle: "italic",
+    color: textColor,
+    textAlignVertical: "top",
+    alignSelf: "flex-end",
+    marginBottom:8,
+    fontSize:12
+  },
+  cover: {
+    width: 53, 
+    height: 75, 
+    marginRight:15
+  },
 })
 
 export default docStyles;

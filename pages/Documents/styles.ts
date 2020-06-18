@@ -6,10 +6,9 @@ const docStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     alignSelf: 'stretch',
-    marginBottom: 10,
+    backgroundColor: '#ccccff',
     borderBottomWidth: 1,
-    //borderRadius:3,
-    borderBottomColor: primary,
+    borderBottomColor: '#bbbbee',
     padding: 5
   },
   document: {
@@ -18,15 +17,19 @@ const docStyles = StyleSheet.create({
     alignSelf: 'stretch',
     marginBottom: 10,
     borderBottomWidth: 1,
-    //borderRadius:3,
-    borderBottomColor: textColor,
+    borderBottomColor: "#CCCCCC",
     padding: 5
   },
   directoryTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    color: primary,
-    marginBottom: 5
+    color: '#928b86',
+    padding: 8
+  },
+  cover: {
+    width: 53, 
+    height: 75, 
+    marginRight:15
   },
   docTitle: {
     fontSize: 16,
