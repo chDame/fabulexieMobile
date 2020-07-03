@@ -12,6 +12,9 @@ export interface ILetterRule {
 export interface IConfig {
   id?: number;
   name?: string;
+  openDys: boolean;
+  extraLineSpace: number|null;
+	extraWordSpace: number|null;
   letterRules?: ILetterRule[];
 }
 

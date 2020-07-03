@@ -5,9 +5,9 @@ import { ILetterRule, IConfig } from '../../store/model';
 import { TouchableOpacity, SafeAreaView, Text, FlatList, Modal, View, StyleSheet, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import { Container, BtnSecondary, BtnPrimary, BtnFa, BtnMat, InputText } from '../../components';
-import { Button } from 'react-native-elements'
+import { Button, CheckBox } from 'react-native-elements'
 import translate from '../../services/i18n';
-import styles from '../../styles';
+import styles, { textColor } from '../../styles';
 import profileService from '../../services/ProfileService';
 import { ColorPicker, TriangleColorPicker, toHsv, fromHsv } from 'react-native-color-picker'
 
@@ -23,6 +23,10 @@ function ProfileScreen() {
   const [change, setChange] = useState<number>(0);
 
   const [colorPickerModal, setColorPickerModal] = useState(false);
+  const [extraLineModal, setExtraLineModal] = useState(false);
+  const [extraWordModal, setExtraWordModal] = useState(false);
+  const [extraLineText, setExtraLineText] = useState(" Extra Line Space");
+  const [extraWordText, setExtraWordText] = useState(" Extra word Space");
   const [rule, setRule] = useState<ILetterRule|null>(null);
   const [frontColor, setFrontColor] = useState(true);
   const [selectedColor, setSelectedColor] = useState("#000000");
@@ -31,7 +35,36 @@ function ProfileScreen() {
     rule.lettersString = value; 
     setChange(change+1);
   } 
-
+  const setLineSpace = (value:number|null):void => {
+    profileEdit.extraLineSpace=value;
+    if (value==0) {
+      setExtraLineText("No extra line Space");
+    } else if (value==1) {
+      setExtraLineText(" x2 Line Space");
+    } else if (value==2) {
+      setExtraLineText(" x3 Line Space");
+    } else {
+      setExtraLineText(" x4 Line Space");
+    }
+    setChange(change+1);
+  }
+  const setWordSpace = (value:number):void => {
+    profileEdit.extraWordSpace=value;
+    if (value==0) {
+      setExtraWordText(" No extra word Space");
+    } else if (value==1) {
+      setExtraWordText(" extra word Space");
+    } else if (value==2) {
+      setExtraWordText(" big word Space");
+    } else {
+      setExtraWordText(" bigger word Space");
+    }
+    setChange(change+1);
+  }
+  const setOpenDys = ():void => {
+    profileEdit.openDys=(profileEdit.openDys)?!profileEdit.openDys:true;
+    setChange(change+1);
+  }
   const italic = (rule: ILetterRule):void => {
     rule.italic = !rule.italic; 
     setChange(change+1);
@@ -62,7 +95,10 @@ function ProfileScreen() {
 
   return (
     <Container>
-     
+      <CheckBox checked={profileEdit.openDys} title="OpenDyslexic" containerStyle={{backgroundColor: 'transparent', borderWidth: 0}} textStyle={{color:textColor, fontSize: 16}} onPress={ () => {setOpenDys()}}></CheckBox>
+      <BtnFa icon='arrows-alt-v' onPress={ () => {setExtraLineModal(true)}} title={ extraLineText }/>
+      <BtnFa icon='arrows-alt-h' onPress={ () => {setExtraWordModal(true)}} title={ extraWordText } />
+              
       <FlatList<ILetterRule> extraData={change}
         removeClippedSubviews={false}
         data={profileEdit?.letterRules}
@@ -91,7 +127,45 @@ function ProfileScreen() {
           title={translate('SAVE')}
         />
       </View>
-      
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={extraLineModal}
+        presentationStyle="overFullScreen"
+      >
+        <View style={modalStyles.centeredView}>
+          <View style={modalStyles.modalView}>
+            <BtnPrimary onPress={() => {setLineSpace(null); setExtraLineModal(false) }} title="No extra space"/>
+            <BtnPrimary onPress={() => {setLineSpace(1); setExtraLineModal(false) }} title="x2"/>
+            <BtnPrimary onPress={() => {setLineSpace(2); setExtraLineModal(false) }} title="x3"/>
+            <BtnPrimary onPress={() => {setLineSpace(3); setExtraLineModal(false) }} title="x4"/>
+            
+            <View style={styles.row}>
+              <BtnSecondary onPress={() => setExtraLineModal(false)} title="Annuler"/>
+            </View>
+         </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={extraWordModal}
+        presentationStyle="overFullScreen"
+      >
+        <View style={modalStyles.centeredView}>
+          <View style={modalStyles.modalView}>
+            <BtnPrimary onPress={() => {setWordSpace(0); setExtraWordModal(false) }} title="No extra space"/>
+            <BtnPrimary onPress={() => {setWordSpace(1); setExtraWordModal(false) }} title="space"/>
+            <BtnPrimary onPress={() => {setWordSpace(2); setExtraWordModal(false) }} title="big space"/>
+            <BtnPrimary onPress={() => {setWordSpace(3); setExtraWordModal(false) }} title="bigger space"/>
+            
+            <View style={styles.row}>
+              <BtnSecondary onPress={() => setExtraWordModal(false)} title="Annuler"/>
+            </View>
+         </View>
+        </View>
+      </Modal>
       <Modal
         animationType="slide"
         transparent={true}

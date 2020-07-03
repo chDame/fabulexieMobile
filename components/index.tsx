@@ -32,6 +32,7 @@ export const BtnPrimary = (props:any) => (
 
 export const BtnFa = (props:any) => (
   <Button 
+    buttonStyle={styles.btnPrimary}
     {...props} 
     icon={props.icon ? 
       <FontAwesome5
