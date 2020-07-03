@@ -185,6 +185,7 @@ export class DocService {
         );
         const fileExists:FileSystem.FileInfo = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}openDys/opendys.css`);
         if (!fileExists.exists) {
+          await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}openDys`);
           downloadOpenDys.downloadAsync();
           downloadOpenDysReg.downloadAsync();
           downloadOpenDysBold.downloadAsync();
