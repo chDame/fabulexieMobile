@@ -163,6 +163,34 @@ export class DocService {
         let coverPath = `${FileSystem.documentDirectory}${doc.id}.png`;
         let fileUrl = `${env.backend}/documents/${doc.accessToken}/saved/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`;
         
+        let downloadOpenDys = FileSystem.createDownloadResumable(
+          `${env.backend}/openDys/opendys.css`,
+          `${FileSystem.documentDirectory}openDys/opendys.css`
+        );
+        let downloadOpenDysReg = FileSystem.createDownloadResumable(
+          `${env.backend}/openDys/OpenDyslexic-Regular.otf`,
+          `${FileSystem.documentDirectory}openDys/OpenDyslexic-Regular.otf`
+        );
+        let downloadOpenDysBold = FileSystem.createDownloadResumable(
+          `${env.backend}/openDys/OpenDyslexic-Bold.otf`,
+          `${FileSystem.documentDirectory}openDys/OpenDyslexic-Bold.otf`
+        );
+        let downloadOpenDysItalic = FileSystem.createDownloadResumable(
+          `${env.backend}/openDys/OpenDyslexic-Italic.otf`,
+          `${FileSystem.documentDirectory}openDys/OpenDyslexic-Italic.otf`
+        );
+        let downloadOpenDysBoldItalic = FileSystem.createDownloadResumable(
+          `${env.backend}/openDys/OpenDyslexic-BoldItalic.otf`,
+          `${FileSystem.documentDirectory}openDys/OpenDyslexic-BoldItalic.otf`
+        );
+        const fileExists:FileSystem.FileInfo = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}openDys/opendys.css`);
+        if (!fileExists.exists) {
+          downloadOpenDys.downloadAsync();
+          downloadOpenDysReg.downloadAsync();
+          downloadOpenDysBold.downloadAsync();
+          downloadOpenDysItalic.downloadAsync();
+          downloadOpenDysBoldItalic.downloadAsync();
+        }
         let downloadBook = FileSystem.createDownloadResumable(
           fileUrl,
           filePath
