@@ -8,6 +8,8 @@ import authService from '../../services/AuthService';
 import { Ionicons } from '@expo/vector-icons';
 import translate from '../../services/i18n';
 import docService from '../../services/DocService';
+import { LocaleSelector, BtnPrimary } from '../../components';
+import { Modal } from 'react-native';
 
 const MyDrawerItem = (props:any) => (
   (props.icon!=null) ?
@@ -44,6 +46,7 @@ function CustomDrawerContent(props: any) {
   }, []);
 
   const [currentRoute, setCurrentRoute] = useState('Home');
+  const [localeModal, setLocaleModal] = useState(false);
   const navigate = (route: string) => {
     setCurrentRoute(route);
     props.navigation.navigate(route);
@@ -53,7 +56,16 @@ function CustomDrawerContent(props: any) {
       <DrawerContentScrollView {...props} >
         <MyDrawerItem label="" action={() => props.navigation.closeDrawer()} icon="ios-arrow-dropleft-circle" iconStyle={styles.toggleDrawer}/>
         <MyDrawerItem label={translate('HOME')} action={() => navigate("Home")} focused={currentRoute=="Home"} icon="ios-home"/>
+        <MyDrawerItem label={translate('LOCALE')} action={() => setLocaleModal(true)} icon="md-globe"/>
         <MyDrawerItem label={translate('SIGNOUT')} action={() =>  dispatch(authService.signOut())} icon="ios-log-out"/>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={localeModal}
+          presentationStyle="overFullScreen">
+            <LocaleSelector close={() => setLocaleModal(false)}/>
+              
+        </Modal>
       </DrawerContentScrollView>
      : 
       <DrawerContentScrollView {...props} >
@@ -67,7 +79,16 @@ function CustomDrawerContent(props: any) {
             icon="ios-journal"/>
         ))
         }
+        <MyDrawerItem label={translate('LOCALE')} action={() => setLocaleModal(true)} icon="md-globe"/>
         <MyDrawerItem label={translate('SIGNOUT')} action={() =>  dispatch(authService.signOut())} icon="ios-log-out"/>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={localeModal}
+          presentationStyle="overFullScreen">
+            <LocaleSelector close={() => setLocaleModal(false)}/>
+              
+        </Modal>
       </DrawerContentScrollView>
     
   );

@@ -5,11 +5,61 @@ import { Button, withTheme } from 'react-native-elements';
 export const primary = "#22aabb";
 export const secondary = "#666666";
 export const textColor = "#553322";
-export const iconColor = "#553322";
+export const iconColor = "#22aabb";
+export const iconSecondaryColor = "#118899";
 
 const BtnBlock = (props:any) => (
   <Button containerStyle={{width: '100%', marginLeft: 0}} {...props} />
 )
+
+export const switchStyles = StyleSheet.create({
+  container: {
+    alignSelf: 'stretch',
+    borderBottomWidth: 1,
+    borderBottomColor: textColor,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding:10,
+  },
+  text: {
+    alignSelf: 'stretch',
+    color: textColor,
+    fontSize: 16
+  }
+});
+
+export const modalStyles = StyleSheet.create({
+  colorModalOverlayView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 22,
+    paddingBottom: 22,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)'
+  },
+  ruleModalOverlayView: {
+    flex: 1,
+    justifyContent: "center",
+    paddingTop: 22,
+    paddingBottom: 22,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)'
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "#f1e6d0",
+    borderRadius: 5,
+    padding: 15,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  }
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -44,14 +94,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly"
   },
   btnPrimary: {
-    height: 55,
+    height: 50,
     backgroundColor: primary,
     alignItems: "center",
     justifyContent: "center",
     margin: 5
   },
   btnSecondary: {
-    height: 55,
+    height: 50,
     backgroundColor: secondary,
     alignItems: "center",
     justifyContent: "center",

@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import store, { AppThunk } from '../store';
 import { RootState } from '../store/rootReducer';
-import { authStart, signInSuccess, signOutSuccess, fail } from '../store/features/auth/slice';
+import { authStart, signInSuccess, signOutSuccess, fail, silentfail } from '../store/features/auth/slice';
 import { setCurrentProfile } from '../store/features/profile/slice';
 import profileService from './ProfileService';
 import { IUser } from '../store/model';
@@ -42,8 +42,9 @@ export class AuthService {
         }
         dispatch(signInSuccess(data));
       } catch (error) {
+        api.defaults.headers.Authorization = null;
         console.warn('Error', error.message);
-        dispatch(fail(error.toString()));
+        dispatch(silentfail());
       }
     }
   }

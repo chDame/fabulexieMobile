@@ -14,6 +14,7 @@ import { Image } from 'react-native';
 import CustomDrawerContent from './components/DrawerContent'
 import translate from './services/i18n';
 import authService from './services/AuthService';
+import docService from './services/DocService';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -25,7 +26,7 @@ function Main(props:any) {
       <Stack.Screen name="Home" options={{headerTitle: translate('HOME')}} component={HomeScreen} />
       <Stack.Screen name="Profile" options={{headerTitle: translate('PROFILE')}} component={ProfileScreen} />
       <Stack.Screen name="Documents" options={{headerTitle: translate('DOCUMENTS')}} component={DocumentsScreen} />
-      <Stack.Screen name="Read" component={ReadScreen} />
+      <Stack.Screen name="Read" component={ReadScreen} options={{headerTitle: docService.getDocTitle()}}  />
     </Stack.Navigator>
   );
 }

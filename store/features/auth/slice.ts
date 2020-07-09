@@ -24,6 +24,9 @@ const counterSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    silentfail: (state: AuthState) => {
+      state.loading = false;
+    },
     signInSuccess: (state: AuthState, action: PayloadAction<IUser>) => {
       state.loading = false;
       state.data = action.payload;
@@ -39,6 +42,7 @@ export const {
   signInSuccess,
   signOutSuccess,
   fail,
+  silentfail
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

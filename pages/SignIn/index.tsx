@@ -5,7 +5,8 @@ import * as Yup from 'yup';
 
 import {RootState} from '../../store/rootReducer';
 
-import { Container, Logo, AlertError, BtnBlock, Password, InputText, Link } from '../../components';
+import { Container, LocaleSelector, Logo, AlertError, BtnBlock, Password, InputText, IconLink, Link } from '../../components';
+import { Modal } from 'react-native';
 import styles from '../../styles';
 import translate from '../../services/i18n';
 import authService from '../../services/AuthService'
@@ -28,6 +29,7 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [localeModal, setLocaleModal] = useState(false);
 
   useEffect(() => {
     dispatch(authService.signInToken());
@@ -46,6 +48,15 @@ function SignIn() {
     <Container>
      
         <Logo source={require('../../assets/fabulexie.png')} />
+        <IconLink action={() => setLocaleModal(true)} icon="md-globe">{translate('LOCALE')}</IconLink>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={localeModal}
+          presentationStyle="overFullScreen">
+            <LocaleSelector close={() => setLocaleModal(false)}/>
+              
+        </Modal>
         <InputText placeholder={translate('LOGIN_email')} onChangeText={(text:string) => {setEmail(text) }} icon='ios-at'/>
         <Password placeholder={translate('LOGIN_password')} onChangeText={(text:string) => setPassword(text)} style={styles.input} />
 

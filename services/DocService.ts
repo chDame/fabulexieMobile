@@ -21,6 +21,10 @@ export class DocService {
     let dir:IDirectory|null = store.getState().documents.currentDir;
     return dir ? dir.id : null;
   }
+  getDocTitle = ():string => {
+    let doc:IDocument|null = store.getState().doc.doc;
+    return doc ? (doc.title ? doc.title : doc.name) : '';
+  }
   getCover = (token: string):string => {
     return `${env.backend}/documents/${token}/cover.png`;
   }

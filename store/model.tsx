@@ -40,7 +40,7 @@ export interface IDirectory {
 }
 export interface IDocument {
   id: number;
-  name?: string;
+  name: string;
   title?: string;
   description?: string;
   ownerId?: number;

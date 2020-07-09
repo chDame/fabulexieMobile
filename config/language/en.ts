@@ -1,4 +1,5 @@
 export const en = {
+   LOCALE: 'Language',
    LOGIN_login: 'login',
    LOGIN_offline: 'Offline access',
    LOGIN_createAccount: 'Create an account',
@@ -12,9 +13,25 @@ export const en = {
    REGISTER_haveAnAccount: 'I already have an account',
    HOME: 'Home',
    PROFILE: 'My profile',
+   PROFILE_extraLineSpace: 'Extra line space',
+   PROFILE_2xLineSpace: 'Double line space',
+   PROFILE_3xLineSpace: 'Triple line space',
+   PROFILE_4xLineSpace: 'Quadruple line space',
+   PROFILE_extraWordSpace: 'Extra word space',
+   PROFILE_wordSpace: 'Space',
+   PROFILE_bigWordSpace: 'Big space',
+   PROFILE_biggerWordSpace: 'Bigger space',
    PROFILE_uppercase: 'Uppercase',
+   PROFILE_addRule: 'Add rules',
+   PROFILE_letterRule: 'Rule for letters',
    DOCUMENTS: 'My books',
    SIGNOUT: 'Sign out',
    ERROR_NETWORK: 'Server unreachable. Do you have internet access?',
-   SAVE: 'Save'
+   SAVE: 'Save',
+   CANCEL: 'Cancel',
+   DELETE: 'Delete',
+   FINISH: 'Finish',
+   VALIDATE: 'Validate',
+   DEFAULT: 'Default',
+   HOME_welcomingMsg: 'Welcome to Fabulexie! To navigate in the application, use the "burger" menu in the top left corner. You can define your reading parameters in the menu "My profile" and download documents from the "Public" space or from your private space "My space". You\'ll then find this documents here, instead of this message. Enjoy your readings'
  };

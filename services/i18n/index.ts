@@ -19,3 +19,11 @@ i18n.locale = Localization.locale;
 export default function translate(key:string):string {
 	return i18n.t(key);
 }
+
+export function setLocale(locale:string):void {
+  i18n.locale = locale;
+}
+
+export function getLocale():string {
+  return i18n.locale;
+}

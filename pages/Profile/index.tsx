@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import { ILetterRule, IConfig } from '../../store/model';
-import { TouchableOpacity, SafeAreaView, Text, FlatList, Modal, View, StyleSheet, Dimensions } from 'react-native';
-import Constants from 'expo-constants';
-import { Container, BtnSecondary, BtnPrimary, BtnFa, BtnMat, InputText } from '../../components';
-import { Button, CheckBox } from 'react-native-elements'
+import { FlatList, Modal, View, StyleSheet, Dimensions } from 'react-native';
+import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnMat, InputText, FullSwitch, Radio } from '../../components';
 import translate from '../../services/i18n';
-import styles, { textColor } from '../../styles';
+import styles, { modalStyles } from '../../styles';
 import profileService from '../../services/ProfileService';
-import { ColorPicker, TriangleColorPicker, toHsv, fromHsv } from 'react-native-color-picker'
+import { TriangleColorPicker, toHsv, fromHsv } from 'react-native-color-picker'
 
 function ProfileScreen() {
   const dispatch = useDispatch();
@@ -22,12 +20,12 @@ function ProfileScreen() {
   const [profileEdit, setProfileEdit] = useState<IConfig>(JSON.parse(JSON.stringify(profile)));
   const [change, setChange] = useState<number>(0);
 
+  const [letterRuleModal, setLetterRuleModal] = useState(false);
   const [colorPickerModal, setColorPickerModal] = useState(false);
   const [extraLineModal, setExtraLineModal] = useState(false);
   const [extraWordModal, setExtraWordModal] = useState(false);
-  const [extraLineText, setExtraLineText] = useState(" Extra Line Space");
-  const [extraWordText, setExtraWordText] = useState(" Extra word Space");
-  const [rule, setRule] = useState<ILetterRule|null>(null);
+  const [rule, setRule] = useState<ILetterRule>({});
+  const [ruleIdx, setRuleIdx] = useState<number>(-1);
   const [frontColor, setFrontColor] = useState(true);
   const [selectedColor, setSelectedColor] = useState("#000000");
 
@@ -37,27 +35,19 @@ function ProfileScreen() {
   } 
   const setLineSpace = (value:number|null):void => {
     profileEdit.extraLineSpace=value;
-    if (value==0) {
-      setExtraLineText("No extra line Space");
-    } else if (value==1) {
-      setExtraLineText(" x2 Line Space");
-    } else if (value==2) {
-      setExtraLineText(" x3 Line Space");
+    if (value==null) {
+      setExtraLineModal(false);
     } else {
-      setExtraLineText(" x4 Line Space");
+      setExtraLineModal(true);
     }
     setChange(change+1);
   }
-  const setWordSpace = (value:number):void => {
+  const setWordSpace = (value:number|null):void => {
     profileEdit.extraWordSpace=value;
-    if (value==0) {
-      setExtraWordText(" No extra word Space");
-    } else if (value==1) {
-      setExtraWordText(" extra word Space");
-    } else if (value==2) {
-      setExtraWordText(" big word Space");
+    if (value==null) {
+      setExtraWordModal(false);
     } else {
-      setExtraWordText(" bigger word Space");
+      setExtraWordModal(true);
     }
     setChange(change+1);
   }
@@ -95,31 +85,72 @@ function ProfileScreen() {
 
   return (
     <Container>
-      <CheckBox checked={profileEdit.openDys} title="OpenDyslexic" containerStyle={{backgroundColor: 'transparent', borderWidth: 0}} textStyle={{color:textColor, fontSize: 16}} onPress={ () => {setOpenDys()}}></CheckBox>
-      <BtnFa icon='arrows-alt-v' onPress={ () => {setExtraLineModal(true)}} title={ extraLineText }/>
-      <BtnFa icon='arrows-alt-h' onPress={ () => {setExtraWordModal(true)}} title={ extraWordText } />
-              
+      <FullSwitch value={profileEdit.openDys}
+        onChange={() => setOpenDys()}
+        label="OpenDyslexic"/>
+      <FullSwitch value={profileEdit.extraLineSpace!=null}
+          onChange={() => {(profileEdit.extraLineSpace)?setLineSpace(null):setLineSpace(1);}}
+          onLabelClick={() => (profileEdit.extraLineSpace)?setExtraLineModal(!extraLineModal):setExtraLineModal(false)}
+          label={translate('PROFILE_extraLineSpace')}
+          />
+
+      <View 
+        style={{display: extraLineModal?"flex":"none"}}>
+            
+          <Radio
+              title={translate('PROFILE_2xLineSpace')}
+              checked={profileEdit.extraLineSpace==1}
+              onPress={() => setLineSpace(1)}
+            />
+            <Radio
+              title={translate('PROFILE_3xLineSpace')}
+              checked={profileEdit.extraLineSpace==2}
+              onPress={() => setLineSpace(2)}
+            />
+            <Radio
+              title={translate('PROFILE_4xLineSpace')}
+              checked={profileEdit.extraLineSpace==3}
+              onPress={() => setLineSpace(3)}
+            />
+      </View>
+
+      <FullSwitch value={profileEdit.extraWordSpace!=null}
+          onChange={() => {(profileEdit.extraWordSpace)?setWordSpace(null):setWordSpace(1);}}
+          onLabelClick={() => (profileEdit.extraWordSpace)?setExtraWordModal(!extraWordModal):setExtraWordModal(false)}
+          label={translate('PROFILE_extraWordSpace')}
+          />
+
+      <View 
+        style={{display: extraWordModal?"flex":"none"}}>
+            
+          <Radio
+              title={translate('PROFILE_wordSpace')}
+              checked={profileEdit.extraWordSpace==1}
+              onPress={() => setWordSpace(1)}
+            />
+            <Radio
+              title={translate('PROFILE_bigWordSpace')}
+              checked={profileEdit.extraWordSpace==2}
+              onPress={() => setWordSpace(2)}
+            />
+            <Radio
+              title={translate('PROFILE_biggerWordSpace')}
+              checked={profileEdit.extraWordSpace==3}
+              onPress={() => setWordSpace(3)}
+            />
+      </View>
+           
       <FlatList<ILetterRule> extraData={change}
+        style={{width:"100%"}}
         removeClippedSubviews={false}
         data={profileEdit?.letterRules}
         keyExtractor={item => `${item.id}`}
         renderItem={({item, index}) => (
-          <TouchableOpacity>
-            <InputText onChangeText={(text:string) => setLetters(item, text) } inputStyle={{color: item.color ? item.color : 'black', backgroundColor: item.backgroundColor ? item.backgroundColor : 'transparent'}} defaultValue={`${item.lettersString}`}/>
-            <View style={styles.buttonGroup}>
-              <BtnFa icon='italic' onPress={ () => italic(item)} buttonStyle={item.italic ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnFa icon='bold' onPress={ () => bold(item)}  buttonStyle={item.bold ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnFa icon='underline' onPress={ () => underline(item)}  buttonStyle={item.underlined ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnMat icon='format-letter-case-upper' onPress={ () => uppercase(item)} buttonStyle={item.upperCase ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnFa icon='paint-brush' onPress={ () => {setRule(item); setFrontColor(true); setColorPickerModal(true)}} buttonStyle={item.color ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn}/>
-              <BtnFa icon='fill-drip' onPress={ () => {setRule(item); setFrontColor(false); setColorPickerModal(true)}} buttonStyle={item.backgroundColor ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnFa icon='trash' onPress={ () => {removeRule(index); }} buttonStyle={styles.buttonGroupBtn}/>
-            </View>
-          </TouchableOpacity>
+          <RuleLetterPopper onPress={ () => {setRule(item); setRuleIdx(index); setLetterRuleModal(true);}} rule={item}/>
         )}
       />
       <View style={[styles.row, styles.mt1]}>
-        <BtnPrimary icon='ios-add-circle-outline' onPress={ () => addRule()} title="Ajouter règle"/>
+        <BtnPrimary icon='ios-add-circle-outline' onPress={ () => addRule()} title={translate('PROFILE_addRule')}/>
         <BtnPrimary
           onPress={() => saveProfile()}
           loading={loading}
@@ -131,48 +162,35 @@ function ProfileScreen() {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={extraLineModal}
+        visible={letterRuleModal}
         presentationStyle="overFullScreen"
       >
-        <View style={modalStyles.centeredView}>
+        <View style={modalStyles.ruleModalOverlayView}>
           <View style={modalStyles.modalView}>
-            <BtnPrimary onPress={() => {setLineSpace(null); setExtraLineModal(false) }} title="No extra space"/>
-            <BtnPrimary onPress={() => {setLineSpace(1); setExtraLineModal(false) }} title="x2"/>
-            <BtnPrimary onPress={() => {setLineSpace(2); setExtraLineModal(false) }} title="x3"/>
-            <BtnPrimary onPress={() => {setLineSpace(3); setExtraLineModal(false) }} title="x4"/>
-            
+            <InputText onChangeText={(text:string) => setLetters(rule, text) } inputStyle={{color: rule.color ? rule.color : 'black', backgroundColor: rule.backgroundColor ? rule.backgroundColor : 'transparent'}} defaultValue={`${rule.lettersString}`}/>
+            <View style={styles.buttonGroup}>
+              <BtnFa icon='italic' onPress={ () => italic(rule)} buttonStyle={rule.italic ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnFa icon='bold' onPress={ () => bold(rule)}  buttonStyle={rule.bold ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnFa icon='underline' onPress={ () => underline(rule)}  buttonStyle={rule.underlined ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnMat icon='format-letter-case-upper' onPress={ () => uppercase(rule)} buttonStyle={rule.upperCase ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+              <BtnFa icon='paint-brush' onPress={ () => { setFrontColor(true); setColorPickerModal(true)}} buttonStyle={rule.color ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn}/>
+              <BtnFa icon='fill-drip' onPress={ () => { setFrontColor(false); setColorPickerModal(true)}} buttonStyle={rule.backgroundColor ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+            </View>
             <View style={styles.row}>
-              <BtnSecondary onPress={() => setExtraLineModal(false)} title="Annuler"/>
+              <BtnPrimary onPress={() => setLetterRuleModal(false)} title={translate('FINISH')}/>
+              <BtnFa icon='trash' onPress={ () => {removeRule(ruleIdx); setLetterRuleModal(false)}} title={translate('DELETE')}/>
             </View>
          </View>
         </View>
       </Modal>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={extraWordModal}
-        presentationStyle="overFullScreen"
-      >
-        <View style={modalStyles.centeredView}>
-          <View style={modalStyles.modalView}>
-            <BtnPrimary onPress={() => {setWordSpace(0); setExtraWordModal(false) }} title="No extra space"/>
-            <BtnPrimary onPress={() => {setWordSpace(1); setExtraWordModal(false) }} title="space"/>
-            <BtnPrimary onPress={() => {setWordSpace(2); setExtraWordModal(false) }} title="big space"/>
-            <BtnPrimary onPress={() => {setWordSpace(3); setExtraWordModal(false) }} title="bigger space"/>
-            
-            <View style={styles.row}>
-              <BtnSecondary onPress={() => setExtraWordModal(false)} title="Annuler"/>
-            </View>
-         </View>
-        </View>
-      </Modal>
+
       <Modal
         animationType="slide"
         transparent={true}
         visible={colorPickerModal}
         presentationStyle="overFullScreen"
       >
-        <View style={modalStyles.centeredView}>
+        <View style={modalStyles.colorModalOverlayView}>
           <View style={modalStyles.modalView}>
             <TriangleColorPicker 
               oldColor={rule && rule.color ? rule.color : "#333333"}
@@ -180,9 +198,9 @@ function ProfileScreen() {
               style={{flex:1, marginBottom: 40, width: Dimensions.get("window").width-100, height: Dimensions.get("window").width-100}}
             />
             <View style={styles.row}>
-              <BtnSecondary onPress={() => setColorPickerModal(false)} title="Annuler"/>
-              <BtnPrimary onPress={() => {if (rule!=null) frontColor ? rule.color = null : rule.backgroundColor = null; setChange(change+1); setColorPickerModal(false)}} title="Par défaut"/>
-              <BtnPrimary onPress={() => {if (rule!=null) frontColor ? rule.color = selectedColor : rule.backgroundColor = selectedColor; setChange(change+1); setColorPickerModal(false)}} title="Valider"/>
+              <BtnSecondary onPress={() => setColorPickerModal(false)} title={translate('CANCEL')}/>
+              <BtnPrimary onPress={() => {if (rule!=null) frontColor ? rule.color = null : rule.backgroundColor = null; setChange(change+1); setColorPickerModal(false)}} title={translate('DEFAULT')}/>
+              <BtnPrimary onPress={() => {if (rule!=null) frontColor ? rule.color = selectedColor : rule.backgroundColor = selectedColor; setChange(change+1); setColorPickerModal(false)}} title={translate('VALIDATE')}/>
             </View>
          </View>
         </View>
@@ -191,30 +209,6 @@ function ProfileScreen() {
   );
 };
 
-const modalStyles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-    marginBottom: 22
-  },
-  modalView: {
-    flex:1,
-    margin: 20,
-    backgroundColor: "#333333",
-    borderRadius: 20,
-    padding: 15,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
-  }
-});
+
 
 export default ProfileScreen;

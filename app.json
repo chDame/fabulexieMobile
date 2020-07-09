@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "fab-mobile",
-    "slug": "fab-mobile",
+    "name": "fabulexie2",
+    "slug": "fabulexie2",
     "platforms": [
       "ios",
       "android",
@@ -25,8 +25,9 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.dame.fabulexie",
-      "versionCode": 1
+      "package": "com.dame.fabulexie2",
+      "versionCode": 1,
+	  "permissions": []
     }
   }
 }

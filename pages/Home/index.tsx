@@ -9,8 +9,9 @@ import {RootState} from '../../store/rootReducer';
 import { IDocument } from '../../store/model';
 import docService from '../../services/DocService';
 import { Container } from '../../components';
-
+import translate from '../../services/i18n';
 import docStyles from './styles';
+import { textColor } from '../../styles';
 
 function DocumentsScreen() {
   const dispatch = useDispatch();
@@ -59,7 +60,7 @@ function DocumentsScreen() {
             </TouchableOpacity>
           )}
         />
-      )  : (<Text></Text>)) }
+      )  : (<Text style={{color:textColor, padding:20}}>{translate('HOME_welcomingMsg')}</Text>)) }
 
       
     </Container>
