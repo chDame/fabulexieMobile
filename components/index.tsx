@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles, { modalStyles, switchStyles, iconColor, textColor, iconSecondaryColor } from '../styles';
+import styles, { modalStyles, btnStyles, switchStyles, iconColor, textColor, iconSecondaryColor } from '../styles';
 import { Switch, Text, Image, View, TouchableOpacity } from 'react-native';
 import { Button, Input, CheckBox } from 'react-native-elements';
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -64,16 +64,16 @@ export const Btn = (props:any) => (
   />
 )
 export const BtnSecondary = (props:any) => (
-  <Btn buttonStyle={styles.btnSecondary} {...props} />
+  <Btn buttonStyle={btnStyles.btnSecondary} {...props} />
 )
 export const BtnPrimary = (props:any) => (
-  <Btn buttonStyle={styles.btnPrimary} 
+  <Btn buttonStyle={btnStyles.btnPrimary} 
   {...props} />
 )
 
 export const BtnFa = (props:any) => (
   <Button 
-    buttonStyle={styles.btnPrimary}
+    buttonStyle={btnStyles.btnPrimary}
     titleStyle={{marginLeft:props.icon?10:0,marginRight:10}}
     {...props} 
     icon={props.icon ? 
@@ -85,6 +85,20 @@ export const BtnFa = (props:any) => (
       :{}
     }
   />
+)
+
+export const BtnFaRound = (props:any) => (
+  <TouchableOpacity onPress={props.action} style={btnStyles.btnRoundContainer}>
+    <FontAwesome5 name={props.icon} style={props.pressed ? [btnStyles.btnRound, btnStyles.btnRoundPressed] : btnStyles.btnRound}></FontAwesome5>
+    <Text {...props} style={btnStyles.btnRoundSubTitle}/>
+  </TouchableOpacity>
+)
+
+export const BtnMatRound = (props:any) => (
+  <TouchableOpacity onPress={props.action} style={btnStyles.btnRoundContainer}>
+    <MaterialCommunityIcons name={props.icon} style={props.pressed ? [btnStyles.btnRound, btnStyles.btnRoundMat, btnStyles.btnRoundPressed] : [btnStyles.btnRound, btnStyles.btnRoundMat]}/>
+    <Text {...props} style={btnStyles.btnRoundSubTitle}/>
+  </TouchableOpacity>
 )
 
 export const BtnMat = (props:any) => (

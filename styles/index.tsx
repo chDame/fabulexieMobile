@@ -61,6 +61,60 @@ export const modalStyles = StyleSheet.create({
   }
 });
 
+export const btnStyles = StyleSheet.create({
+  btnPrimary: {
+    height: 50,
+    backgroundColor: primary,
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 5
+  },
+  btnSecondary: {
+    height: 50,
+    backgroundColor: secondary,
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 5
+  },
+  btnIcon: {
+    paddingTop: 4,
+    marginRight: 10
+  },
+  btnRoundContainer: {
+    width: '33%',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  btnRound: {
+    marginBottom: 5,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    fontSize: 20,
+    textAlign: 'center',
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: textColor,
+    color: textColor,
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 3, //IOS
+  },
+  btnRoundPressed: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+  },
+  btnRoundMat: {
+    fontSize: 34,
+    paddingVertical: 0,
+  },
+  btnRoundSubTitle: {
+    fontSize: 12,
+    color: textColor,
+    marginBottom: 10,
+  },
+});
+
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'stretch',
@@ -93,24 +147,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly"
   },
-  btnPrimary: {
-    height: 50,
-    backgroundColor: primary,
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 5
-  },
-  btnSecondary: {
-    height: 50,
-    backgroundColor: secondary,
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 5
-  },
-  btnIcon: {
-    paddingTop: 4,
-    marginRight: 10
-  },
+ 
   inputIcon: {
     paddingTop: 4,
     marginRight: 10
@@ -153,27 +190,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#33bbcc",
     borderBottomWidth: 2
   },
-  buttonGroup: {
-    flexDirection: "row",
-    borderRadius: 5,
-    backgroundColor: primary,
-  },
-  buttonGroupBtn: {
-    borderRadius: 0,
-    backgroundColor: 'transparent',
-    borderColor: 'white',
-    borderRightWidth: 1,
-    height:40,
-    minWidth:40
-  },
-  buttonGroupBtnPressed: {
-    borderRadius: 0,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    borderColor: 'white',
-    borderRightWidth: 1,
-    height:40,
-    minWidth:40
-  }
+  
 });
 
 export default styles;

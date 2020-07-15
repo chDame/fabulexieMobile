@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import { ILetterRule, IConfig } from '../../store/model';
-import { FlatList, Modal, View, Dimensions, Text } from 'react-native';
-import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnMat, InputText, FullSwitch, Radio } from '../../components';
+import { FlatList, Modal, View, Dimensions } from 'react-native';
+import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnFaRound, BtnMatRound, InputText, FullSwitch, Radio } from '../../components';
 import translate from '../../services/i18n';
 import styles, { modalStyles } from '../../styles';
 import profileService from '../../services/ProfileService';
@@ -177,14 +177,17 @@ function ProfileScreen() {
       >
         <View style={modalStyles.ruleModalOverlayView}>
           <View style={modalStyles.modalView}>
-            <InputText onChangeText={(text:string) => setLetters(rule, text) } inputStyle={{color: rule.color ? rule.color : 'black', backgroundColor: rule.backgroundColor ? rule.backgroundColor : 'transparent'}} defaultValue={`${rule.lettersString}`}/>
-            <View style={styles.buttonGroup}>
-              <BtnFa icon='italic' onPress={ () => italic(rule)} buttonStyle={rule.italic ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnFa icon='bold' onPress={ () => bold(rule)}  buttonStyle={rule.bold ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnFa icon='underline' onPress={ () => underline(rule)}  buttonStyle={rule.underlined ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnMat icon='format-letter-case-upper' onPress={ () => uppercase(rule)} buttonStyle={rule.upperCase ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
-              <BtnFa icon='paint-brush' onPress={ () => { setFrontColor(true); setColorPickerModal(true)}} buttonStyle={rule.color ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn}/>
-              <BtnFa icon='fill-drip' onPress={ () => { setFrontColor(false); setColorPickerModal(true)}} buttonStyle={rule.backgroundColor ? styles.buttonGroupBtnPressed : styles.buttonGroupBtn} />
+            <InputText placeholder={translate('PROFILE_characters')} onChangeText={(text:string) => setLetters(rule, text) } inputStyle={{color: rule.color ? rule.color : 'black', backgroundColor: rule.backgroundColor ? rule.backgroundColor : 'transparent'}} defaultValue={`${rule.lettersString}`}/>
+
+            <View style={{ justifyContent: "space-evenly", flexDirection: 'row', alignSelf: 'stretch',}}>
+              <BtnFaRound icon='italic' action={ () => italic(rule)} pressed={rule.italic}>{translate('PROFILE_italic')}</BtnFaRound>
+              <BtnFaRound icon='bold' action={ () => bold(rule)} pressed={rule.bold}>{translate('PROFILE_bold')}</BtnFaRound>
+              <BtnFaRound icon='underline' action={ () => underline(rule)} pressed={rule.underlined}>{translate('PROFILE_underline')}</BtnFaRound>
+            </View>
+            <View style={{ justifyContent: "space-evenly", flexDirection: 'row', alignSelf: 'stretch',}}>
+              <BtnMatRound icon='format-letter-case-upper' action={ () => uppercase(rule)} pressed={rule.upperCase}>{translate('PROFILE_uppercase')}</BtnMatRound>
+              <BtnFaRound icon='paint-brush' action={ () => { setFrontColor(true); setColorPickerModal(true)}} pressed={rule.color}>{translate('PROFILE_frontColor')}</BtnFaRound>
+              <BtnFaRound icon='fill-drip' action={ () => { setFrontColor(false); setColorPickerModal(true)}} pressed={rule.backgroundColor}>{translate('PROFILE_backColor')}</BtnFaRound>
             </View>
             <View style={styles.row}>
               <BtnPrimary onPress={() => setLetterRuleModal(false)} title={translate('FINISH')}/>
