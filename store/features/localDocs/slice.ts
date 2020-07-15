@@ -40,11 +40,19 @@ const availableDocsSlice = createSlice({
     },
     addLocalDocument: (state: DocumentListState, action: PayloadAction<IDocument>) => {
       let index = state.ids.indexOf(action.payload.id);
+
       if (index<0) {
         state.data = state.data.concat(action.payload);
         state.ids = state.ids.concat(action.payload.id);
       } else {
         Object.assign(state.data[index], action.payload);
+      }
+    },
+    removeLocalDocument: (state: DocumentListState, action: PayloadAction<IDocument>) => {
+      let index = state.ids.indexOf(action.payload.id);
+      if (index>=0) {
+        state.data = [...state.data.slice(0, index), ...state.data.slice(index + 1)];
+        state.ids = [...state.ids.slice(0, index), ...state.ids.slice(index + 1)];
       }
     },
     localDocsFail: (state: DocumentListState, action: PayloadAction<string>) => {
@@ -58,6 +66,7 @@ export const {
   localDocsLoading,
   localDocsLoadSuccess,
   addLocalDocument,
+  removeLocalDocument,
   updateDocument,
   localDocsFail,
 } = availableDocsSlice.actions;

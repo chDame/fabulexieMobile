@@ -120,6 +120,18 @@ export const BtnBlock = (props:any) => (
   <BtnPrimary containerStyle={{width: '100%', marginLeft: 0}} {...props} />
 )
 
+export const MenuAction = (props:any) => (
+  <TouchableOpacity style={switchStyles.container} onPress={props.onPress}>
+    {props.icon ? (<FontAwesome5 
+        name={props.icon}
+        size={24}
+        style={{color: (props.color) ? props.color :textColor}}
+      />) : (<></>)}
+    <Text style={[switchStyles.text, (props.color) ? {color: props.color} : {}]} >{props.label}</Text>
+  </TouchableOpacity>
+)
+
+
 export const Logo = (props:any) => (
   <Image style={styles.logo} {...props} />
 )

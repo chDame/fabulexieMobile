@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {TouchableOpacity, FlatList, ActivityIndicator, Text, Image, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {TouchableOpacity, Modal, FlatList, ActivityIndicator, Text, Image, View } from 'react-native';
 
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -8,10 +8,10 @@ import {useNavigation} from '@react-navigation/native';
 import {RootState} from '../../store/rootReducer';
 import { IDocument } from '../../store/model';
 import docService from '../../services/DocService';
-import { Container } from '../../components';
+import { Container, BtnSecondary, MenuAction } from '../../components';
 import translate from '../../services/i18n';
 import docStyles from './styles';
-import { textColor } from '../../styles';
+import { textColor, modalStyles } from '../../styles';
 
 function DocumentsScreen() {
   const dispatch = useDispatch();
@@ -21,6 +21,8 @@ function DocumentsScreen() {
     loading: state.available.loading,
   }));
 
+  const [bookActionModal, setBookActionModal] = useState(false);
+  const [book, setBook] = useState<IDocument|null>(null);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -29,6 +31,15 @@ function DocumentsScreen() {
 
   function HandleRead(doc: IDocument) {
     dispatch(docService.setDocument({...doc}));
+    setBookActionModal(false);
+    navigation.navigate('Read');
+  }
+
+  async function HandleReadRefresh(doc: IDocument) {
+    let clone:IDocument = await docService.getNewDoc(doc);
+    
+    dispatch(docService.setDocument({...clone}));
+    setBookActionModal(false);
     navigation.navigate('Read');
   }
 
@@ -41,7 +52,8 @@ function DocumentsScreen() {
           data={data}
           keyExtractor={item => `${item.id}`}
           renderItem={({item}) => (
-            <TouchableOpacity style={docStyles.document} onPress={() => HandleRead(item)}>
+            <TouchableOpacity style={docStyles.document} onPress={() => HandleRead(item)}
+              onLongPress={() => {console.log("prout"); setBook(item); setBookActionModal(true); }}>
                 { item.coverPath ? 
                   //<Text >{item.coverPath}</Text>
                   <Image style={docStyles.cover} source={{uri: item.coverPath}}/>
@@ -62,7 +74,32 @@ function DocumentsScreen() {
         />
       )  : (<Text style={{color:textColor, padding:20}}>{translate('HOME_welcomingMsg')}</Text>)) }
 
-      
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={bookActionModal}
+        presentationStyle="overFullScreen"
+      >
+        
+        <View style={modalStyles.ruleModalOverlayView}>
+          <View style={modalStyles.modalView}>
+            {(book!=null) ? (
+              <View style={docStyles.popupContent}>
+                <View style={docStyles.titleProgression}>
+                    <Text style={docStyles.docTitle}>{book.title}</Text>
+                    <Text style={docStyles.progression}>page {book.progression} / {book.nbPages}</Text>
+                </View>
+                <MenuAction icon='eye' label={translate('READ')} onPress={() => HandleRead(book)}/>
+                <MenuAction icon='sync' label={translate('HOME_refresh')} subtitle={translate('HOME_refresh_subtitle')} onPress={() => HandleReadRefresh(book)}/>
+                <MenuAction icon='trash' color='#CC0000' label={translate('DELETE')} onPress={() => {dispatch(docService.deleteLocal(book)); setBookActionModal(false);}}/>
+              </View>
+            ) : (<></>)}
+            <View style={{alignSelf: 'stretch', alignItems: 'center'}}>
+              <BtnSecondary onPress={() => setBookActionModal(false)} title={translate('CANCEL')}/>
+            </View>
+         </View>
+        </View>
+      </Modal>
     </Container>
   );
 };

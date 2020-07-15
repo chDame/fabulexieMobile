@@ -7,7 +7,7 @@ import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnFaRoun
 import translate from '../../services/i18n';
 import styles, { modalStyles } from '../../styles';
 import profileService from '../../services/ProfileService';
-import { TriangleColorPicker, toHsv, fromHsv } from 'react-native-color-picker'
+import { TriangleColorPicker, fromHsv } from 'react-native-color-picker'
 
 function ProfileScreen() {
   const dispatch = useDispatch();

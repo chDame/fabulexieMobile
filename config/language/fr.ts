@@ -12,6 +12,8 @@ export const fr = {
    REGISTER_register: 'S\'enregistrer',
    REGISTER_haveAnAccount: 'J\'ai déjà un compte',
    HOME: 'Mes lectures',
+   HOME_refresh: 'Recharger le livre',
+   HOME_refresh_subtitle: '(Il sera adapté à votre profile. Vous perdrez votre progression)',
    PUBLIC_LIBRARY: 'Bibliothèque publique',
    PROFILE: 'Mon profile',
    PROFILE_extraLineSpace: 'Espacement de lignes',
@@ -41,5 +43,6 @@ export const fr = {
    FINISH: 'Terminer',
    VALIDATE: 'Valider',
    DEFAULT: 'Par défaut',
+   READ: 'Read',
    HOME_welcomingMsg: 'Bienvenue dans Fabulexie! Pour naviguer dans l\'application, utilisez le menu en haut à gauche. Vous pouvez dès à présent définir vos paramètres de lecture via le menu "Mon profile" et télécharger vos documents depuis l\'espace "Public" ou votre espace privé "My space". Vous trouverez alors ces documents ici, à la place de ce message. Bonnes lectures!'
  };

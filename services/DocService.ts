@@ -1,7 +1,7 @@
 import store, { AppThunk } from '../store';
 import { setCurrentDocument, setNbPage } from '../store/features/document/slice';
 import { remoteLoading, remoteDocsLoadSuccess, remoteSpacesLoadSuccess, remoteDirLoadSuccess, remoteLoadingFail, setSpace, setDirectory } from '../store/features/remoteDocs/slice';
-import { localDocsLoading, localDocsLoadSuccess, localDocsFail, addLocalDocument, updateDocument } from '../store/features/localDocs/slice';
+import { localDocsLoading, localDocsLoadSuccess, localDocsFail, addLocalDocument, removeLocalDocument, updateDocument } from '../store/features/localDocs/slice';
 import { IDocument, ISpaceAccess, IDirectory, ISpace } from '../store/model';
 import api from './api';
 import { AsyncStorage, Dimensions } from 'react-native';
@@ -49,6 +49,15 @@ export class DocService {
     }
     return this.getSpaceUrl()+'/'+this.getSpaceId()+'/directories/'+dirId+'/documents';
   }
+  getDocumentUrl = (doc: IDocument):string => {
+    return this.getDocumentsUrl()+'/'+doc.id;
+  }
+
+  getNewDoc = async (doc:IDocument):Promise<IDocument> => {
+    const {data} =  await api.get<IDocument>(this.getDocumentUrl(doc));
+    return data;
+  }
+  
   setDocument = (doc:IDocument): AppThunk => async dispatch => {
     let clone = Object.assign(doc);
     if (doc.filePath) {
@@ -104,6 +113,7 @@ export class DocService {
       dispatch(remoteLoadingFail(err.toString()));
     }
   }
+
 
   fetchRemoteDocuments = (): AppThunk => async dispatch => {
     try {
@@ -164,7 +174,13 @@ export class DocService {
         }
       }
     }
-
+    deleteLocal = (doc:IDocument): AppThunk => async dispatch => {
+      if (doc.filePath) {
+        await AsyncStorage.removeItem(`@DocumentStore:${doc.id}`);
+        await FileSystem.deleteAsync(doc.filePath);
+        dispatch(removeLocalDocument(doc));
+      }
+    }
     storeDocument = (doc:IDocument, nbPage: number): AppThunk => async dispatch => {
       try {
         let filePath = `${FileSystem.documentDirectory}${doc.id}.html`;

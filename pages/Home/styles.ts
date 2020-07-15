@@ -45,6 +45,11 @@ const docStyles = StyleSheet.create({
     height: 75, 
     marginRight:15
   },
+  popupContent: {
+    flexDirection: "column",
+    alignSelf: 'stretch',
+    textAlignVertical: "top"
+  },
 })
 
 export default docStyles;
