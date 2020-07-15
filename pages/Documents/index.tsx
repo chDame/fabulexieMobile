@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { BackHandler } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/rootReducer';
@@ -11,7 +13,7 @@ import { Container } from '../../components';
 import { FontAwesome5 } from '@expo/vector-icons';
 import docStyles from './styles';
 
-function DocumentsScreen() {
+function DocumentsScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const {docs, dirs, loading} = useSelector((state: RootState) => ({
@@ -20,8 +22,27 @@ function DocumentsScreen() {
     loading: state.documents.loading,
   }));
 
-  const navigation = useNavigation();
+  React.useEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        let parent = docService.getDirParent();
+        if (parent!=null) {
+          dispatch(docService.setCurrentDir(parent));
+          return true;
+        } else if (docService.getDirectoryId()!=null) {
+          dispatch(docService.setCurrentDir(null));
+          return true;
+        } else {
+          return false;
+        }
+      };
 
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [])
+  );
 
   function HandleRead(doc: IDocument) {
     dispatch(docService.setDocument({...doc}));

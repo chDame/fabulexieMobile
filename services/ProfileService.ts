@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { AppThunk } from '../store';
 import { RootState } from '../store/rootReducer';
 import { authStart, signInSuccess, signOutSuccess, fail } from '../store/features/auth/slice';
-import { setCurrentProfile, deleteProfile } from '../store/features/profile/slice';
+import { setCurrentProfile, deleteProfile, startLoading } from '../store/features/profile/slice';
 import { IUser, IConfig, ILetterRule } from '../store/model';
 import api from './api';
 import { AsyncStorage } from 'react-native';
@@ -27,6 +27,7 @@ export class ProfileService {
   }
 
   saveProfile = (user: IUser, profile: IConfig): AppThunk => async dispatch => {
+    startLoading();
     if (profile.letterRules) {
       for (let i=0; i < profile.letterRules.length; i++) {
         let rule = profile.letterRules[i];

@@ -15,7 +15,7 @@ export interface IConfig {
   openDys: boolean;
   extraLineSpace: number|null;
 	extraWordSpace: number|null;
-  letterRules?: ILetterRule[];
+  letterRules: ILetterRule[];
 }
 
 export interface IUser {
@@ -37,6 +37,7 @@ export interface ISpace {
 export interface IDirectory {
   id: number;
   name: string;
+  parent: IDirectory|null;
 }
 export interface IDocument {
   id: number;

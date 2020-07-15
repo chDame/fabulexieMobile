@@ -48,7 +48,7 @@ function Reader() {
 
       setSource({ html: HTMLFile });
     } else if (doc) {
-      setSource({ uri:  `${env.backend}/documents/${doc.accessToken}/adapt/reader/${Dimensions.get('window').width}/${Dimensions.get('window').height-120}`})
+      setSource({ uri:  `${env.backend}/documents/${doc.accessToken}/adapt/reader/${Dimensions.get('window').width-30}/${Dimensions.get('window').height-130}`})
     }
   }
 
@@ -130,7 +130,10 @@ export const styleReader=StyleSheet.create({
   view: {
     backgroundColor: "transparent",
     alignSelf: 'stretch',
-    marginTop: 0
+    marginTop: 10,
+    marginBottom:10,
+    marginLeft:15,
+    marginRight:15,
   }
 })
 

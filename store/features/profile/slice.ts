@@ -40,6 +40,7 @@ const profileSlice = createSlice({
 });
 
 export const {
+  startLoading,
   setCurrentProfile,
   deleteProfile,
   profileFail,

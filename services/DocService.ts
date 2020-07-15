@@ -21,6 +21,10 @@ export class DocService {
     let dir:IDirectory|null = store.getState().documents.currentDir;
     return dir ? dir.id : null;
   }
+  getDirParent = ():IDirectory|null => {
+    let dir:IDirectory|null = store.getState().documents.currentDir;
+    return dir ? dir.parent : null;
+  }
   getDocTitle = ():string => {
     let doc:IDocument|null = store.getState().doc.doc;
     return doc ? (doc.title ? doc.title : doc.name) : '';
@@ -79,7 +83,7 @@ export class DocService {
       dispatch(remoteLoadingFail(err.toString()));
     }
   }
-  setCurrentDir = (dir: IDirectory): AppThunk => async dispatch => {
+  setCurrentDir = (dir: IDirectory|null): AppThunk => async dispatch => {
     try {
       dispatch(setDirectory(dir));
       dispatch(this.fetchRemoteDirs());

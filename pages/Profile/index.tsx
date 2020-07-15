@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import { ILetterRule, IConfig } from '../../store/model';
-import { FlatList, Modal, View, StyleSheet, Dimensions } from 'react-native';
+import { FlatList, Modal, View, Dimensions, Text } from 'react-native';
 import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnMat, InputText, FullSwitch, Radio } from '../../components';
 import translate from '../../services/i18n';
 import styles, { modalStyles } from '../../styles';
@@ -72,7 +72,11 @@ function ProfileScreen() {
     setChange(change+1);
   } 
   const addRule = ():void => {
-    profileEdit.letterRules?.push({lettersString:'', italic:false, bold:true, upperCase:false, underlined:false});
+    let length = profileEdit.letterRules?.push({lettersString:'', italic:false, bold:true, upperCase:false, underlined:false});
+    let idx = length-1;
+    setRuleIdx(idx);
+    setRule(profileEdit.letterRules[idx]);
+    setLetterRuleModal(true);
     setChange(change+1);
   }
   const removeRule = (index:number):void => {
@@ -81,6 +85,7 @@ function ProfileScreen() {
   }
   const saveProfile = async () => {
     dispatch(profileService.saveProfile(user, profileEdit));
+    setChange(0);
   };
 
   return (
@@ -151,12 +156,17 @@ function ProfileScreen() {
       />
       <View style={[styles.row, styles.mt1]}>
         <BtnPrimary icon='ios-add-circle-outline' onPress={ () => addRule()} title={translate('PROFILE_addRule')}/>
-        <BtnPrimary
+        {change>0 ? 
+        (<BtnPrimary
           onPress={() => saveProfile()}
           loading={loading}
           icon="md-save"
           title={translate('SAVE')}
-        />
+        />) : <BtnPrimary
+        disabled
+        icon="ios-checkmark"
+        title={translate('SAVED')}
+      /> }
       </View>
 
       <Modal

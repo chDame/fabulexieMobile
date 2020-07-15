@@ -73,7 +73,7 @@ function CustomDrawerContent(props: any) {
         <MyDrawerItem label={translate('HOME')} action={() => navigate("Home")} focused={currentRoute=="Home"} icon="ios-home"/>
         <MyDrawerItem label={translate('PROFILE')} action={() => navigate("Profile")} focused={currentRoute=="Profile"} icon="ios-cog"/>
         {spaces.map(spaceInfo => (
-          <MyDrawerItem key={spaceInfo.id} label={spaceInfo.space.name} 
+          <MyDrawerItem key={spaceInfo.id} label={spaceInfo.space.name=='Public'?translate('PUBLIC_LIBRARY'):spaceInfo.space.name} 
             action={() => {dispatch(docService.setCurrentSpace(spaceInfo.space)); navigate("Documents")}} 
             focused={currentRoute=="Documents" && currentSpace && currentSpace.id==spaceInfo.space.id} 
             icon="ios-journal"/>
