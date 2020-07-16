@@ -90,11 +90,13 @@ function Reader() {
           <View style={styleReader.footer}>
             <Ionicons name='ios-arrow-back' size={30}
               style={styleReader.btnIcon}
+              disabled={currentPage==1}
               onPress={() => {setCurrentPage(currentPage-1); dispatch(docService.storeProgression(doc, currentPage-1)); scrollTo(currentPage-1); }}
             />
             <Text style={styleReader.nbPages}>Page {currentPage} / {nbPage}</Text>
             <Ionicons name='ios-arrow-forward' size={30}
               style={styleReader.btnIcon}
+              disabled={currentPage==nbPage}
               onPress={() => {setCurrentPage(currentPage+1); dispatch(docService.storeProgression(doc, currentPage+1)); scrollTo(currentPage+1); }}
             />
           </View>
