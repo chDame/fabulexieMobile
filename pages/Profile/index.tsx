@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import { ILetterRule, IConfig } from '../../store/model';
 import { FlatList, Modal, View, Dimensions } from 'react-native';
 import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnFaRound, BtnMatRound, InputText, FullSwitch, Radio } from '../../components';
 import translate from '../../services/i18n';
-import styles, { modalStyles } from '../../styles';
+import styles, { modalStyles, textColor } from '../../styles';
 import profileService from '../../services/ProfileService';
 import { TriangleColorPicker, fromHsv } from 'react-native-color-picker'
+import thunk from 'redux-thunk';
+import store from '../../store';
+import { State } from 'react-native-gesture-handler';
 
 function ProfileScreen() {
   const dispatch = useDispatch();
@@ -84,9 +87,17 @@ function ProfileScreen() {
     setChange(change+1);
   }
   const saveProfile = async () => {
+    const unsubscribe = store.subscribe(() => {
+      if (store.getState().profile.loading == false) {
+        setProfileEdit(JSON.parse(JSON.stringify(store.getState().profile.profile)));
+        setChange(0); 
+        unsubscribe();
+      }
+    });
     dispatch(profileService.saveProfile(user, profileEdit));
-    setChange(0);
+    
   };
+ 
 
   return (
     <Container>
@@ -177,7 +188,7 @@ function ProfileScreen() {
       >
         <View style={modalStyles.ruleModalOverlayView}>
           <View style={modalStyles.modalView}>
-            <InputText placeholder={translate('PROFILE_characters')} onChangeText={(text:string) => setLetters(rule, text) } inputStyle={{color: rule.color ? rule.color : 'black', backgroundColor: rule.backgroundColor ? rule.backgroundColor : 'transparent'}} defaultValue={`${rule.lettersString}`}/>
+            <InputText placeholder={translate('PROFILE_characters')} onChangeText={(text:string) => setLetters(rule, text) } inputStyle={{color: textColor}} defaultValue={`${rule.lettersString}`}/>
 
             <View style={{ justifyContent: "space-evenly", flexDirection: 'row', alignSelf: 'stretch',}}>
               <BtnFaRound icon='italic' action={ () => italic(rule)} pressed={rule.italic}>{translate('PROFILE_italic')}</BtnFaRound>

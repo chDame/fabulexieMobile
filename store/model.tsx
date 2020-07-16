@@ -17,6 +17,9 @@ export interface IConfig {
 	extraWordSpace: number|null;
   letterRules: ILetterRule[];
 }
+export interface IConfigResource {
+  userConfig: IConfig;
+}
 
 export interface IUser {
   id: number;

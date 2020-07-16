@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import store, { AppThunk } from '../store';
 import { RootState } from '../store/rootReducer';
 import { authStart, signInSuccess, signOutSuccess, fail, silentfail } from '../store/features/auth/slice';
-import { setCurrentProfile } from '../store/features/profile/slice';
+
 import profileService from './ProfileService';
 import { IUser } from '../store/model';
 import api from './api';
