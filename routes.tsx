@@ -6,6 +6,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import DocumentsScreen from './pages/Documents';
+import SettingsScreen from './pages/Settings';
 import ProfileScreen from './pages/Profile';
 import HomeScreen from './pages/Home';
 import ReadScreen from './pages/Read';
@@ -25,7 +26,8 @@ function Main(props:any) {
     <Stack.Navigator screenOptions={stackNavOptions} initialRouteName="Home">
       <Stack.Screen name="Home" options={{headerTitle: translate('HOME')}} component={HomeScreen} />
       <Stack.Screen name="Profile" options={{headerTitle: translate('PROFILE')}} component={ProfileScreen} />
-      <Stack.Screen name="Documents" options={{headerTitle: translate('DOCUMENTS')}} component={DocumentsScreen} />
+      <Stack.Screen name="Settings" options={{headerTitle: translate('SETTINGS')}} component={SettingsScreen} />
+      <Stack.Screen name="Documents" options={{headerTitle: docService.getCurrentSpaceDisplay()}} component={DocumentsScreen} />
       <Stack.Screen name="Read" component={ReadScreen} options={{headerTitle: docService.getDocTitle()}}  />
     </Stack.Navigator>
   );

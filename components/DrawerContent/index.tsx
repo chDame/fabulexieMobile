@@ -10,6 +10,7 @@ import translate from '../../services/i18n';
 import docService from '../../services/DocService';
 import { LocaleSelector, BtnPrimary } from '../../components';
 import { Modal } from 'react-native';
+import informationService from '../../services/InformationService';
 
 const MyDrawerItem = (props:any) => (
   (props.icon!=null) ?
@@ -57,6 +58,8 @@ function CustomDrawerContent(props: any) {
         <MyDrawerItem label="" action={() => props.navigation.closeDrawer()} icon="ios-arrow-dropleft-circle" iconStyle={styles.toggleDrawer}/>
         <MyDrawerItem label={translate('HOME')} action={() => navigate("Home")} focused={currentRoute=="Home"} icon="ios-home"/>
         <MyDrawerItem label={translate('LOCALE')} action={() => setLocaleModal(true)} icon="md-globe"/>
+        
+        <MyDrawerItem label={translate('SETTINGS')} action={() => navigate("Settings")} icon="ios-cog"/>
         <MyDrawerItem label={translate('SIGNOUT')} action={() =>  dispatch(authService.signOut())} icon="ios-log-out"/>
         <Modal
           animationType="slide"
@@ -73,13 +76,14 @@ function CustomDrawerContent(props: any) {
         <MyDrawerItem label={translate('HOME')} action={() => navigate("Home")} focused={currentRoute=="Home"} icon="ios-home"/>
         <MyDrawerItem label={translate('PROFILE')} action={() => navigate("Profile")} focused={currentRoute=="Profile"} icon="ios-cog"/>
         {spaces.map(spaceInfo => (
-          <MyDrawerItem key={spaceInfo.id} label={spaceInfo.space.name=='Public'?translate('PUBLIC_LIBRARY'):spaceInfo.space.name} 
+          <MyDrawerItem key={spaceInfo.id} label={docService.getSpaceDisplay(spaceInfo.space)} 
             action={() => {dispatch(docService.setCurrentSpace(spaceInfo.space)); navigate("Documents")}} 
             focused={currentRoute=="Documents" && currentSpace && currentSpace.id==spaceInfo.space.id} 
             icon="ios-journal"/>
         ))
         }
         <MyDrawerItem label={translate('LOCALE')} action={() => setLocaleModal(true)} icon="md-globe"/>
+        <MyDrawerItem label={translate('SETTINGS')} action={() => navigate("Settings")} icon="ios-cog"/>
         <MyDrawerItem label={translate('SIGNOUT')} action={() =>  dispatch(authService.signOut())} icon="ios-log-out"/>
         <Modal
           animationType="slide"

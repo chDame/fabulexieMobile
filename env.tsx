@@ -1,4 +1,4 @@
 export const env = {
-	//backend: 'https://b498ed516edf.ngrok.io'
+	//backend: 'https://701d98c8e778.ngrok.io'
 	backend: 'https://back.fabulexie.fr'
 }

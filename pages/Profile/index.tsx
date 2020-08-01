@@ -3,7 +3,7 @@ import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import { ILetterRule, IConfig } from '../../store/model';
 import { FlatList, Modal, View, Dimensions } from 'react-native';
-import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnFaRound, BtnMatRound, InputText, FullSwitch, Radio } from '../../components';
+import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnFaSecondary, BtnFaRound, BtnMatRound, InputText, FullSwitch, Radio } from '../../components';
 import translate from '../../services/i18n';
 import styles, { modalStyles, textColor } from '../../styles';
 import profileService from '../../services/ProfileService';
@@ -201,8 +201,8 @@ function ProfileScreen() {
               <BtnFaRound icon='fill-drip' action={ () => { setFrontColor(false); setColorPickerModal(true)}} pressed={rule.backgroundColor}>{translate('PROFILE_backColor')}</BtnFaRound>
             </View>
             <View style={styles.row}>
-              <BtnPrimary onPress={() => setLetterRuleModal(false)} title={translate('FINISH')}/>
-              <BtnFa icon='trash' onPress={ () => {removeRule(ruleIdx); setLetterRuleModal(false)}} title={translate('DELETE')}/>
+              <BtnFa icon='check' onPress={() => setLetterRuleModal(false)} title={translate('VALIDATE')}/>
+              <BtnFaSecondary icon='trash' onPress={ () => {removeRule(ruleIdx); setLetterRuleModal(false)}} title={translate('DELETE')}/>
             </View>
          </View>
         </View>

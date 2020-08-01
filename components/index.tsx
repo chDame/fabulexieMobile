@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import styles, { modalStyles, btnStyles, switchStyles, iconColor, textColor, iconSecondaryColor } from '../styles';
-import { Switch, Text, Image, View, TouchableOpacity } from 'react-native';
+import styles, { modalStyles, btnStyles, switchStyles, iconColor, textColor, iconSecondaryColor, primary } from '../styles';
+import { ScrollView, Switch, Text, Image, View, TouchableOpacity } from 'react-native';
 import { Button, Input, CheckBox } from 'react-native-elements';
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import translate, {setLocale, getLocale} from '../services/i18n';
+import informationService from '../services/InformationService';
 
 export const Container = (props:any) => (
   <View style={[styles.container, props.style]} {...props} />
 )
 
+export const ScrollContainer = (props:any) => (
+  <ScrollView contentContainerStyle={{flexGrow:1}}>
+    <View style={[styles.container, props.style]} {...props} />
+  </ScrollView>
+)
+
 export const FullSwitch = (props:any) => (
   <View style={switchStyles.container}>
+    {props.icon && <Ionicons name={props.icon} style={{fontSize:20, marginRight:10, color:textColor}}></Ionicons>}
     <Text style={switchStyles.text} onPress={props.onLabelClick}>{props.label}</Text>
     <Switch
         trackColor={{ false: "#767577", true: iconSecondaryColor }}
@@ -21,6 +29,15 @@ export const FullSwitch = (props:any) => (
         value={props.value}
       />
   </View>
+)
+
+export const SettingsLink = (props:any) => (
+  <TouchableOpacity onPress={props.action} style={switchStyles.container}>
+    {props.icon && <Ionicons name={props.icon} style={{fontSize:20, marginRight:10, color:textColor}}></Ionicons>
+    }
+    <Text style={switchStyles.text} onPress={props.onLabelClick}>{props.label}</Text>
+    <Text style={switchStyles.text} onPress={props.onLabelClick}>{props.value}</Text>
+  </TouchableOpacity>
 )
 
 export const RuleLetterPopper = (props:any) => (
@@ -52,7 +69,7 @@ export const Radio = (props:any) => (
 export const Btn = (props:any) => (
   <Button 
     {...props} 
-    titleStyle={{marginLeft:props.icon?10:0,marginRight:10}}
+    titleStyle={[props.titleStyle, {marginLeft:props.icon?10:0,marginRight:10}]}
     icon={props.icon ? 
       <Ionicons
         name={props.icon}
@@ -64,7 +81,7 @@ export const Btn = (props:any) => (
   />
 )
 export const BtnSecondary = (props:any) => (
-  <Btn buttonStyle={btnStyles.btnSecondary} {...props} />
+  <Btn buttonStyle={btnStyles.btnSecondary} titleStyle={{color: primary}} {...props} />
 )
 export const BtnPrimary = (props:any) => (
   <Btn buttonStyle={btnStyles.btnPrimary} 
@@ -81,6 +98,23 @@ export const BtnFa = (props:any) => (
         name={props.icon}
         size={24}
         color="white"
+      />
+      :{}
+    }
+  />
+)
+
+
+export const BtnFaSecondary = (props:any) => (
+  <Button 
+    buttonStyle={btnStyles.btnSecondary}
+    titleStyle={{marginLeft:props.icon?10:0,marginRight:10, color: primary}}
+    {...props} 
+    icon={props.icon ? 
+      <FontAwesome5 
+        name={props.icon}
+        size={24}
+        color={primary}
       />
       :{}
     }
@@ -200,3 +234,56 @@ export function LocaleSelector({...props}) {
   </View>
 )
   }
+
+
+export function MessageInfo({...props}) {
+  const [change, setChange] = useState(0);
+  return(informationService.displayInformation(props.messageKey) ?
+    <View style={{backgroundColor: '#DDDDFF', padding: 10, margin: 40, borderRadius:5}} >
+      <View style={{flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "space-between", padding: 10, backgroundColor: "#BBBBEE", marginBottom: 10, borderRadius:5}}>
+        <Ionicons
+          name="ios-help-buoy"
+          size={30}
+          style={{color: '#8888BB'}}
+          
+          />
+          <Text style={{fontSize: 18}}>Information</Text>
+          
+        <Ionicons
+          name="ios-close"
+          size={30}
+          style={{textShadowColor: "white", textShadowRadius:1, textShadowOffset:{height:1, width:1}}}
+          onPress={() => { setChange(change+1); informationService.closeInformation(props.messageKey, false)}}
+          />
+      </View>
+      <Text>{translate(props.messageKey)}</Text>  
+
+        <Button 
+          buttonStyle={{backgroundColor: '#BBBBEE', marginTop:20}}
+          titleStyle={{marginLeft:10, color: 'black'}}
+          title="Fermer"
+          onPress={() => { setChange(change+1); informationService.closeInformation(props.messageKey, true)}}
+          icon={
+            <Ionicons 
+              name="ios-close"
+              size={30}
+            />
+          }
+        />
+        <Button 
+          buttonStyle={{backgroundColor: '#BBBBEE', marginTop:10}}
+          titleStyle={{marginLeft:10, color: 'black', width: '70%'}}
+          title="Ne plus afficher de messages d'information"
+          onPress={() => { setChange(change+1); informationService.closeInformation('all', true)}}
+          icon={
+            <Ionicons 
+              name="ios-eye-off"
+              size={30}
+            />
+          }
+        />
+    </View>
+    : <></>)
+}

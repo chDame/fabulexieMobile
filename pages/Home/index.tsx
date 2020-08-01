@@ -8,10 +8,10 @@ import {useNavigation} from '@react-navigation/native';
 import {RootState} from '../../store/rootReducer';
 import { IDocument } from '../../store/model';
 import docService from '../../services/DocService';
-import { Container, BtnSecondary, MenuAction } from '../../components';
+import { Container, BtnSecondary, MenuAction, MessageInfo } from '../../components';
 import translate from '../../services/i18n';
 import docStyles from './styles';
-import { textColor, modalStyles } from '../../styles';
+import { modalStyles } from '../../styles';
 
 function DocumentsScreen() {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ function DocumentsScreen() {
     <Container style={{alignSelf: 'stretch'}}>
       {loading ? (
         <ActivityIndicator size="large" color="#ff00ff" />
-      ) : (data.length > 0 ? (
+      ) : (data.length>0 ?
         <FlatList<IDocument>
           data={data}
           keyExtractor={item => `${item.id}`}
@@ -71,9 +71,9 @@ function DocumentsScreen() {
                 
             </TouchableOpacity>
           )}
-        />
-      )  : (<Text style={{color:textColor, padding:20}}>{translate('HOME_welcomingMsg')}</Text>)) }
-
+        /> : <MessageInfo messageKey="INFO_welcomingMsg"></MessageInfo>
+      )}
+      
       <Modal
         animationType="slide"
         transparent={true}
@@ -83,7 +83,7 @@ function DocumentsScreen() {
         
         <View style={modalStyles.ruleModalOverlayView}>
           <View style={modalStyles.modalView}>
-            {(book!=null) ? (
+            {(book!=null) && (
               <View style={docStyles.popupContent}>
                 <View style={docStyles.titleProgression}>
                     <Text style={docStyles.docTitle}>{book.title}</Text>
@@ -92,8 +92,8 @@ function DocumentsScreen() {
                 <MenuAction icon='eye' label={translate('READ')} onPress={() => HandleRead(book)}/>
                 <MenuAction icon='sync' label={translate('HOME_refresh')} subtitle={translate('HOME_refresh_subtitle')} onPress={() => HandleReadRefresh(book)}/>
                 <MenuAction icon='trash' color='#CC0000' label={translate('DELETE')} onPress={() => {dispatch(docService.deleteLocal(book)); setBookActionModal(false);}}/>
-              </View>
-            ) : (<></>)}
+              </View> 
+            ) }
             <View style={{alignSelf: 'stretch', alignItems: 'center'}}>
               <BtnSecondary onPress={() => setBookActionModal(false)} title={translate('CANCEL')}/>
             </View>

@@ -9,6 +9,7 @@ import api from './api';
 import { AsyncStorage } from 'react-native';
 import * as Navigation from './Navigation';
 import translate from './i18n';
+import informationService from './InformationService';
 
 export class AuthService {
   isAuthenticated = () => useSelector(
@@ -38,6 +39,7 @@ export class AuthService {
           await AsyncStorage.setItem('@UserToken', data.token);
         }
         if (data.activeConfig) {
+          informationService.loadInformations();
           dispatch(profileService.loadProfile(data.activeConfig));
         }
         dispatch(signInSuccess(data));
@@ -60,6 +62,7 @@ export class AuthService {
         await AsyncStorage.setItem('@UserToken', data.token);
       }
       if (data.activeConfig) {
+        informationService.loadInformations();
         dispatch(profileService.loadProfile(data.activeConfig));
       }
       dispatch(signInSuccess(data));

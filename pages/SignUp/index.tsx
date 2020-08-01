@@ -8,7 +8,7 @@ import authService from '../../services/AuthService';
 
 import { Container, Logo, AlertError, BtnBlock, Password, InputText, Link } from '../../components';
 import {IUser} from '../../store/model';
-import styles from '../../styles';
+import styles, { btnStyles } from '../../styles';
 import translate from '../../services/i18n';
 
 const schema = Yup.object().shape({
@@ -24,7 +24,7 @@ function SignUp() {
   const dispatch = useDispatch();
   const loading = useSelector((state: RootState) => state.auth.loading);
 
-  const [user, setUser] = useState<IUser>({name: '', email: '', password: ''});
+  const [user, setUser] = useState<IUser>({id:-1, name: '', email: '', password: ''});
   const [error, setError] = useState('');
 
   const handleSubmit = async () => {
@@ -45,10 +45,10 @@ function SignUp() {
         <InputText placeholder={translate('LOGIN_email')} onChangeText={(text:string) => setUser({...user, email: text})} icon='ios-at'/>
         <Password placeholder={translate('LOGIN_password')} onChangeText={(text:string) => setUser({...user, password: text})} style={styles.input} />
 
-        { (error.length==0) ? (<></>) : (<AlertError label={error}/>)}
+        { (error.length>0) && (<AlertError label={error}/>)}
         <BtnBlock onPress={() => handleSubmit()} loading={loading} icon="ios-checkmark-circle-outline"
           title={translate('REGISTER_register')}
-          buttonStyle={styles.btnPrimary}
+          buttonStyle={btnStyles.btnPrimary}
         />
         
         <Link onPress={() => navigation.navigate('SignIn')} style={styles.mt1}>{translate('REGISTER_haveAnAccount')}</Link>

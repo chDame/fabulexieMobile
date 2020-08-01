@@ -12,9 +12,12 @@ export const fr = {
    REGISTER_register: 'S\'enregistrer',
    REGISTER_haveAnAccount: 'J\'ai déjà un compte',
    HOME: 'Mes lectures',
+   SETTINGS: 'Paramètres',
+   HELP: 'Aide contextuelle',
    HOME_refresh: 'Recharger le livre',
    HOME_refresh_subtitle: '(Il sera adapté à votre profile. Vous perdrez votre progression)',
    PUBLIC_LIBRARY: 'Bibliothèque publique',
+   MY_SPACE: 'Mon espace privé',
    PROFILE: 'Mon profile',
    PROFILE_extraLineSpace: 'Espacement de lignes',
    PROFILE_2xLineSpace: 'Espacement double',
@@ -44,5 +47,7 @@ export const fr = {
    VALIDATE: 'Valider',
    DEFAULT: 'Par défaut',
    READ: 'Read',
-   HOME_welcomingMsg: 'Bienvenue dans Fabulexie! Pour naviguer dans l\'application, utilisez le menu en haut à gauche. Vous pouvez dès à présent définir vos paramètres de lecture via le menu "Mon profile" et télécharger vos documents depuis l\'espace "Public" ou votre espace privé "My space". Vous trouverez alors ces documents ici, à la place de ce message. Bonnes lectures!'
- };
+   INFO_welcomingMsg: 'Bienvenue dans Fabulexie! Pour naviguer dans l\'application, utilisez le menu en haut à gauche. Vous pouvez dès à présent définir vos paramètres de lecture via le menu "Mon profile" et télécharger vos documents depuis l\'espace "Public" ou votre espace privé "My space". Vous trouverez alors ces documents ici, à la place de ce message. Bonnes lectures!',
+   INFO_Myspace:'Vous pouvez ajouter des documents dans cet espace depuis l\'application web http://webapp.fabulexie.fr. Vous pourrez ensuite les lire comme n\'importe quel autre document depuis cet espace.',
+   INFO_Public:'La bibliothèque publique vous permet de télécharger des oeuvres du domaine publique en lecture libre.'
+}

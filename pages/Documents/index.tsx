@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BackHandler } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store/rootReducer';
 
 import {IDocument, IDirectory} from '../../store/model';
 import docService from '../../services/DocService';
+import informationService from '../../services/InformationService';
+import translate from '../../services/i18n';
 
 import { View,TouchableOpacity, SectionList, ActivityIndicator, Text, Image } from 'react-native';
-import { Container } from '../../components';
+import { Container, MessageInfo } from '../../components';
 import { FontAwesome5 } from '@expo/vector-icons';
 import docStyles from './styles';
 
@@ -94,6 +94,7 @@ function DocumentsScreen({ navigation }) {
         </SectionList>
         
       )}
+      <MessageInfo messageKey={`INFO_${docService.getCurrentSpace()?.name?.replace(' ','')}`}></MessageInfo>
     </Container>
   );
 };

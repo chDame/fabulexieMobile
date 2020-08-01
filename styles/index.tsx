@@ -71,7 +71,10 @@ export const btnStyles = StyleSheet.create({
   },
   btnSecondary: {
     height: 50,
-    backgroundColor: secondary,
+    borderColor: primary,
+    color: primary,
+    borderWidth: 2,
+    backgroundColor: "transparent",
     alignItems: "center",
     justifyContent: "center",
     margin: 5
@@ -121,10 +124,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f1e6d0",
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     paddingLeft: "5%",
     paddingRight: "5%",
-    textAlignVertical: "top" 
+    textAlignVertical: "top",
   },
   logo: {
     width: 72,

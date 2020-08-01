@@ -8,6 +8,7 @@ import { AsyncStorage, Dimensions } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { env } from '../env';
 import authService from './AuthService';
+import translate from './i18n';
 
 export class DocService {
 
@@ -91,6 +92,19 @@ export class DocService {
     } catch (err) {
       dispatch(remoteLoadingFail(err.toString()));
     }
+  }
+  getCurrentSpace = (): ISpace|null => {
+    return store.getState().documents.currentSpace;
+  }
+  getSpaceDisplay = (space:ISpace): string => {
+    return space.name=='Public'?translate('PUBLIC_LIBRARY'):space.name=='My space'?translate('MY_SPACE'):space.name;
+  }
+  getCurrentSpaceDisplay = (): string => {
+    let space:ISpace|null =  store.getState().documents.currentSpace;
+    if (space==null) {
+      return "Space";
+    }
+    return this.getSpaceDisplay(space);
   }
   setCurrentDir = (dir: IDirectory|null): AppThunk => async dispatch => {
     try {
