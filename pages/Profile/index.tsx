@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {RootState} from '../../store/rootReducer';
 import {useDispatch, useSelector} from 'react-redux';
-import { ILetterRule, IConfig } from '../../store/model';
+import { ILetterRule, IRule, IConfig, ISyllabeRule, instanceOfLetterRule } from '../../store/model';
 import { FlatList, Modal, View, Dimensions } from 'react-native';
 import { Container, RuleLetterPopper, BtnSecondary, BtnPrimary, BtnFa, BtnFaSecondary, BtnFaRound, BtnMatRound, InputText, FullSwitch, Radio } from '../../components';
 import translate from '../../services/i18n';
@@ -23,17 +23,21 @@ function ProfileScreen() {
   const [profileEdit, setProfileEdit] = useState<IConfig>(JSON.parse(JSON.stringify(profile)));
   const [change, setChange] = useState<number>(0);
 
-  const [letterRuleModal, setLetterRuleModal] = useState(false);
+  const [ruleModal, setRuleModal] = useState(false);
   const [colorPickerModal, setColorPickerModal] = useState(false);
   const [extraLineModal, setExtraLineModal] = useState(false);
   const [extraWordModal, setExtraWordModal] = useState(false);
-  const [rule, setRule] = useState<ILetterRule>({});
+  const [rule, setRule] = useState<IRule>({});
   const [ruleIdx, setRuleIdx] = useState<number>(-1);
   const [frontColor, setFrontColor] = useState(true);
   const [selectedColor, setSelectedColor] = useState("#000000");
 
   const setLetters = (rule: ILetterRule, value: string):void => {
     rule.lettersString = value; 
+    setChange(change+1);
+  } 
+  const setSeparator = (rule: ISyllabeRule, value: string):void => {
+    rule.separator = value; 
     setChange(change+1);
   } 
   const setLineSpace = (value:number|null):void => {
@@ -54,23 +58,41 @@ function ProfileScreen() {
     }
     setChange(change+1);
   }
+  const setSyllabeRule = (value:boolean):void => {
+    profileEdit.syllabeRule.enabled=value;
+    if (value) {
+      setRule(profileEdit.syllabeRule);
+      setRuleModal(true);
+    } else {
+      setRuleModal(false);
+    }
+    setChange(change+1);
+  }
+  const openSyllabeRule = ():void => {
+    if (profileEdit.syllabeRule.enabled) {
+      setRule(profileEdit.syllabeRule);
+      setRuleModal(!ruleModal);
+    } else {
+      setRuleModal(false);
+    }
+  }
   const setOpenDys = ():void => {
     profileEdit.openDys=(profileEdit.openDys)?!profileEdit.openDys:true;
     setChange(change+1);
   }
-  const italic = (rule: ILetterRule):void => {
+  const italic = (rule: IRule):void => {
     rule.italic = !rule.italic; 
     setChange(change+1);
   }
-  const bold = (rule: ILetterRule):void => {
+  const bold = (rule: IRule):void => {
     rule.bold = !rule.bold; 
     setChange(change+1);
   } 
-  const underline = (rule: ILetterRule):void => {
+  const underline = (rule: IRule):void => {
     rule.underlined = !rule.underlined; 
     setChange(change+1);
   } 
-  const uppercase = (rule: ILetterRule):void => {
+  const uppercase = (rule: IRule):void => {
     rule.upperCase = !rule.upperCase; 
     setChange(change+1);
   } 
@@ -79,7 +101,7 @@ function ProfileScreen() {
     let idx = length-1;
     setRuleIdx(idx);
     setRule(profileEdit.letterRules[idx]);
-    setLetterRuleModal(true);
+    setRuleModal(true);
     setChange(change+1);
   }
   const removeRule = (index:number):void => {
@@ -155,16 +177,43 @@ function ProfileScreen() {
               onPress={() => setWordSpace(3)}
             />
       </View>
-           
+      
+      <FullSwitch value={profileEdit.syllabeRule.enabled}
+          onChange={() => {(profileEdit.syllabeRule.enabled)?setSyllabeRule(false):setSyllabeRule(true);}}
+          onLabelClick={() => openSyllabeRule()}
+          label={translate('PROFILE_syllabeRule')}
+          />
+
+      <View 
+        style={{display: extraLineModal?"flex":"none"}}>
+            
+          <Radio
+              title={translate('PROFILE_2xLineSpace')}
+              checked={profileEdit.extraLineSpace==1}
+              onPress={() => setLineSpace(1)}
+            />
+            <Radio
+              title={translate('PROFILE_3xLineSpace')}
+              checked={profileEdit.extraLineSpace==2}
+              onPress={() => setLineSpace(2)}
+            />
+            <Radio
+              title={translate('PROFILE_4xLineSpace')}
+              checked={profileEdit.extraLineSpace==3}
+              onPress={() => setLineSpace(3)}
+            />
+      </View>
+
       <FlatList<ILetterRule> extraData={change}
         style={{width:"100%"}}
         removeClippedSubviews={false}
         data={profileEdit?.letterRules}
         keyExtractor={item => `${item.id}`}
         renderItem={({item, index}) => (
-          <RuleLetterPopper onPress={ () => {setRule(item); setRuleIdx(index); setLetterRuleModal(true);}} rule={item}/>
+          <RuleLetterPopper onPress={ () => {setRule(item); setRuleIdx(index); setRuleModal(true);}} rule={item}/>
         )}
       />
+
       <View style={[styles.row, styles.mt1]}>
         <BtnPrimary icon='ios-add-circle-outline' onPress={ () => addRule()} title={translate('PROFILE_addRule')}/>
         {change>0 ? 
@@ -183,13 +232,16 @@ function ProfileScreen() {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={letterRuleModal}
+        visible={ruleModal}
         presentationStyle="overFullScreen"
       >
         <View style={modalStyles.ruleModalOverlayView}>
           <View style={modalStyles.modalView}>
-            <InputText placeholder={translate('PROFILE_characters')} onChangeText={(text:string) => setLetters(rule, text) } inputStyle={{color: textColor}} defaultValue={`${rule.lettersString}`}/>
-
+            {instanceOfLetterRule(rule) ?
+              <InputText placeholder={translate('PROFILE_characters')} onChangeText={(text:string) => setLetters(rule, text) } inputStyle={{color: textColor}} defaultValue={`${(rule as ILetterRule).lettersString}`}/>
+            :
+              <InputText placeholder={translate('PROFILE_separator')} onChangeText={(text:string) => setSeparator(rule as ISyllabeRule, text) } inputStyle={{color: textColor}} defaultValue={`${(rule as ISyllabeRule).separator}`}/>
+            }
             <View style={{ justifyContent: "space-evenly", flexDirection: 'row', alignSelf: 'stretch',}}>
               <BtnFaRound icon='italic' action={ () => italic(rule)} pressed={rule.italic}>{translate('PROFILE_italic')}</BtnFaRound>
               <BtnFaRound icon='bold' action={ () => bold(rule)} pressed={rule.bold}>{translate('PROFILE_bold')}</BtnFaRound>
@@ -201,9 +253,13 @@ function ProfileScreen() {
               <BtnFaRound icon='fill-drip' action={ () => { setFrontColor(false); setColorPickerModal(true)}} pressed={rule.backgroundColor}>{translate('PROFILE_backColor')}</BtnFaRound>
             </View>
             <View style={styles.row}>
-              <BtnFa icon='check' onPress={() => setLetterRuleModal(false)} title={translate('VALIDATE')}/>
-              <BtnFaSecondary icon='trash' onPress={ () => {removeRule(ruleIdx); setLetterRuleModal(false)}} title={translate('DELETE')}/>
-            </View>
+              <BtnFa icon='check' onPress={() => setRuleModal(false)} title={translate('VALIDATE')}/>
+              {instanceOfLetterRule(rule) ?
+                <BtnFaSecondary icon='trash' onPress={ () => {removeRule(ruleIdx); setRuleModal(false)}} title={translate('DELETE')}/>
+                :
+                <BtnFaSecondary icon='times' onPress={ () => {setRuleModal(false)}} title={translate('CANCEL')}/>
+              }
+              </View>
          </View>
         </View>
       </Modal>

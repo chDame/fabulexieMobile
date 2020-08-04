@@ -29,6 +29,7 @@ export const fr = {
    PROFILE_biggerWordSpace: 'Très grand espace',
    PROFILE_addRule: 'Ajouter des règles',
    PROFILE_letterRule: 'Règle pour les lettres',
+   PROFILE_syllabeRule: 'Séparer les syllabes',
    PROFILE_characters: 'Caractères',
    PROFILE_italic: 'Italique',
    PROFILE_bold: 'Gras',

@@ -1,7 +1,5 @@
-export interface ILetterRule {
+export interface IRule {
   id?: number;
-  letters?: string[];
-  lettersString?: string;
   color?: string | null;
   backgroundColor?: string | null;
   italic?: boolean;
@@ -9,6 +7,19 @@ export interface ILetterRule {
   underlined?: boolean;
   upperCase?: boolean;
 }
+export interface ILetterRule extends IRule {
+  letters?: string[];
+  lettersString?: string;
+}
+export interface ISyllabeRule extends IRule {
+  separator: string;
+  enabled: boolean;
+}
+
+export function instanceOfLetterRule(object: IRule): object is ILetterRule {
+  return 'letters' in object;
+}
+
 export interface IConfig {
   id?: number;
   name?: string;
@@ -16,6 +27,7 @@ export interface IConfig {
   extraLineSpace: number|null;
 	extraWordSpace: number|null;
   letterRules: ILetterRule[];
+  syllabeRule: ISyllabeRule;
 }
 export interface IConfigResource {
   userConfig: IConfig;

@@ -29,6 +29,7 @@ export const en = {
    PROFILE_biggerWordSpace: 'Bigger space',
    PROFILE_addRule: 'Add rules',
    PROFILE_letterRule: 'Rule for letters',
+   PROFILE_syllabeRule: 'Split syllabes',
    PROFILE_characters: 'Characters',
    PROFILE_italic: 'Italic',
    PROFILE_bold: 'Bold',
