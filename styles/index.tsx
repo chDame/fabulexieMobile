@@ -116,6 +116,21 @@ export const btnStyles = StyleSheet.create({
     color: textColor,
     marginBottom: 10,
   },
+  btnGoogle: {
+    height: 50,
+    width: '46%',
+    margin: '2%',
+    backgroundColor: primary,
+    borderRadius: 5,
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  btnGoogleText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 16,
+    marginTop: 14
+  }
 });
 
 const styles = StyleSheet.create({

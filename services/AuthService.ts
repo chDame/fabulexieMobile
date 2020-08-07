@@ -80,6 +80,36 @@ export class AuthService {
       }
     }
   };
+
+  googleSignIn = (token: string): AppThunk => async dispatch => {
+    try {
+      dispatch(authStart());
+          
+      const {data} = await api.get<IUser>('/social/google/'+token);
+ 
+      if (data.token) {
+        api.defaults.headers.Authorization = data.token;
+        await AsyncStorage.setItem('@UserToken', data.token);
+      }
+      if (data.activeConfig) {
+        informationService.loadInformations();
+        dispatch(profileService.loadProfile(data.activeConfig));
+      }
+      dispatch(signInSuccess(data));
+    } catch (error) {
+      if (error.response) {
+        // The request was made. server responded out of range of 2xx
+        dispatch(fail(error.response.data.message));
+      } else if (error.request) {
+        // The request was made but no response was received
+        dispatch(fail(translate('ERROR_NETWORK')));
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.warn('Error', error.message);
+        dispatch(fail(error.toString()));
+      }
+    }
+  };
       
   signUp = (user: IUser): AppThunk => async dispatch => {
     try {

@@ -154,6 +154,18 @@ export const BtnBlock = (props:any) => (
   <BtnPrimary containerStyle={{width: '100%', marginLeft: 0}} {...props} />
 )
 
+export const GoogleSignBtn = (props:any) => (
+  
+  <TouchableOpacity onPress={props.onPress} style={btnStyles.btnGoogle}>
+    <Image
+      style={{ width: 40, height: 40, margin:5 }}
+      source={require('../assets/googleBtn.png')}
+    />
+    <Text style={btnStyles.btnGoogleText}>Google Sign </Text>
+  </TouchableOpacity>
+  
+)
+
 export const MenuAction = (props:any) => (
   <TouchableOpacity style={switchStyles.container} onPress={props.onPress}>
     {props.icon ? (<FontAwesome5 

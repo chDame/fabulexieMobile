@@ -5,11 +5,13 @@ import * as Yup from 'yup';
 
 import {RootState} from '../../store/rootReducer';
 
-import { Container, LocaleSelector, Logo, AlertError, BtnBlock, Password, InputText, IconLink, Link } from '../../components';
-import { Modal } from 'react-native';
+import { Container, LocaleSelector, Logo, AlertError, BtnBlock, Password, InputText, IconLink, Link, GoogleSignBtn } from '../../components';
+import { Modal, View } from 'react-native';
 import styles from '../../styles';
 import translate from '../../services/i18n';
-import authService from '../../services/AuthService'
+import authService from '../../services/AuthService';
+
+import * as Google from 'expo-google-app-auth';
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -31,9 +33,29 @@ function SignIn() {
   const [error, setError] = useState('');
   const [localeModal, setLocaleModal] = useState(false);
 
+
+  let config = {
+    //issuer: 'https://accounts.google.com',
+    scopes: [],
+    androidClientId: '803332818598-agblnatn0849vp519451ml8a9to6gtas.apps.googleusercontent.com', 
+    androidStandaloneAppClientId: 'FabulexieMobile'
+  };
+
   useEffect(() => {
     dispatch(authService.signInToken());
   }, []);
+
+  const googleSignin = async () => {
+    try {
+      const { type, idToken } = await Google.logInAsync(config);
+      
+      if (type === 'success') {
+        dispatch(authService.googleSignIn(idToken));
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -68,6 +90,14 @@ function SignIn() {
           icon="ios-log-in"
           title={translate('LOGIN_login')}
         />
+        <View style={{flexDirection: 'row', alignSelf: 'stretch'}}>
+          <GoogleSignBtn
+            onPress={() => googleSignin()}
+          />
+          <GoogleSignBtn
+            onPress={() => googleSignin()}
+          />
+        </View>
         <Link onPress={() => navigation.navigate('SignUp')} style={styles.mt1}>{translate('LOGIN_createAccount')}</Link>
         <Link onPress={() => dispatch(authService.offline())} style={styles.mt1}>{translate('LOGIN_offline')}</Link>
         
