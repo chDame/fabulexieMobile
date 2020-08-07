@@ -12,6 +12,7 @@ import translate from './i18n';
 import informationService from './InformationService';
 
 export class AuthService {
+
   isAuthenticated = () => useSelector(
     (state: RootState) => state.auth.data.token,
   );
@@ -24,6 +25,10 @@ export class AuthService {
     const data = { id:-1, name: 'offline', email: 'offline', token: 'offline' };
        
     dispatch(signInSuccess(data));
+  }
+
+  getConfig = async (): Promise<any> => {
+    return await api.get<any>('/admin/config');
   }
 
   signInToken = (): AppThunk => async dispatch => {
@@ -81,11 +86,11 @@ export class AuthService {
     }
   };
 
-  googleSignIn = (token: string): AppThunk => async dispatch => {
+  socialSignIn = (social: string, token: string): AppThunk => async dispatch => {
     try {
       dispatch(authStart());
           
-      const {data} = await api.get<IUser>('/social/google/'+token);
+      const {data} = await api.get<IUser>('/social/'+social+'/'+token);
  
       if (data.token) {
         api.defaults.headers.Authorization = data.token;

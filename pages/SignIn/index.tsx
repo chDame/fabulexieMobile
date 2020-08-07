@@ -5,13 +5,14 @@ import * as Yup from 'yup';
 
 import {RootState} from '../../store/rootReducer';
 
-import { Container, LocaleSelector, Logo, AlertError, BtnBlock, Password, InputText, IconLink, Link, GoogleSignBtn } from '../../components';
+import { Container, LocaleSelector, Logo, AlertError, BtnBlock, Password, InputText, IconLink, Link, SocialSignBtn } from '../../components';
 import { Modal, View } from 'react-native';
 import styles from '../../styles';
 import translate from '../../services/i18n';
 import authService from '../../services/AuthService';
 
 import * as Google from 'expo-google-app-auth';
+import * as Facebook from 'expo-facebook';
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -33,28 +34,57 @@ function SignIn() {
   const [error, setError] = useState('');
   const [localeModal, setLocaleModal] = useState(false);
 
-
-  let config = {
-    //issuer: 'https://accounts.google.com',
-    scopes: [],
-    androidClientId: '803332818598-agblnatn0849vp519451ml8a9to6gtas.apps.googleusercontent.com', 
-    androidStandaloneAppClientId: 'FabulexieMobile'
-  };
+  const [googleMobileClientId, setGoogleMobileClientId] = useState('');
+  const [faceBookAppId, setFaceBookAppId] = useState('');
 
   useEffect(() => {
     dispatch(authService.signInToken());
+     authService.getConfig().then(resp => {
+       if (resp.data.googleMobileClientId) {
+          setGoogleMobileClientId(resp.data.googleMobileClientId);
+        }
+        if (resp.data.faceBookAppId) {
+          setFaceBookAppId(resp.data.faceBookAppId);
+        }
+    });
+    
   }, []);
 
   const googleSignin = async () => {
-    try {
-      const { type, idToken } = await Google.logInAsync(config);
-      
-      if (type === 'success') {
-        dispatch(authService.googleSignIn(idToken));
+    if (googleMobileClientId!='') {
+      try {
+        const { type, idToken } = await Google.logInAsync({
+          scopes: [],
+          androidClientId: googleMobileClientId, 
+          androidStandaloneAppClientId: 'FabulexieMobile'
+        });
+        
+        if (type === 'success') {
+          dispatch(authService.socialSignIn('google', idToken));
+        }
+      } catch (error) {
+        setError(error.message);
       }
-    } catch (error) {
-      setError(error.message);
     }
+  };
+
+  const facebookSignin = async () => {
+    if (faceBookAppId!='') {
+      try {
+        await Facebook.initializeAsync(faceBookAppId);
+      const {
+        type,
+        token
+      } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ['public_profile'],
+      });
+      if (type === 'success') {
+          dispatch(authService.socialSignIn('facebook', token));
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+   }
   };
 
   const handleSubmit = async () => {
@@ -91,12 +121,18 @@ function SignIn() {
           title={translate('LOGIN_login')}
         />
         <View style={{flexDirection: 'row', alignSelf: 'stretch'}}>
-          <GoogleSignBtn
+          {(faceBookAppId!='') ?
+          <SocialSignBtn
+            image={require('../../assets/fbBtn.png')}
+            title="Fb SignIn"
+            onPress={() => facebookSignin()}
+          /> : <></>}
+          {(googleMobileClientId!='') ?
+          <SocialSignBtn
+            image={require('../../assets/googleBtn.png')}
+            title="Google SignIn"
             onPress={() => googleSignin()}
-          />
-          <GoogleSignBtn
-            onPress={() => googleSignin()}
-          />
+          /> : <></>}
         </View>
         <Link onPress={() => navigation.navigate('SignUp')} style={styles.mt1}>{translate('LOGIN_createAccount')}</Link>
         <Link onPress={() => dispatch(authService.offline())} style={styles.mt1}>{translate('LOGIN_offline')}</Link>
