@@ -38,8 +38,7 @@ function SignIn() {
   const [faceBookAppId, setFaceBookAppId] = useState('');
 
   useEffect(() => {
-    dispatch(authService.signInToken());
-     authService.getConfig().then(resp => {
+    authService.getConfig().then(resp => {
        if (resp.data.googleMobileClientId) {
           setGoogleMobileClientId(resp.data.googleMobileClientId);
         }
@@ -47,6 +46,7 @@ function SignIn() {
           setFaceBookAppId(resp.data.faceBookAppId);
         }
     });
+    dispatch(authService.signInToken());
     
   }, []);
 
@@ -54,9 +54,9 @@ function SignIn() {
     if (googleMobileClientId!='') {
       try {
         const { type, idToken } = await Google.logInAsync({
-          scopes: [],
+          scopes: ['profile'],
           androidClientId: googleMobileClientId, 
-          androidStandaloneAppClientId: 'FabulexieMobile'
+          androidStandaloneAppClientId: googleMobileClientId
         });
         
         if (type === 'success') {
@@ -124,13 +124,13 @@ function SignIn() {
           {(faceBookAppId!='') ?
           <SocialSignBtn
             image={require('../../assets/fbBtn.png')}
-            title="Fb SignIn"
+            title="Fb Login"
             onPress={() => facebookSignin()}
           /> : <></>}
           {(googleMobileClientId!='') ?
           <SocialSignBtn
             image={require('../../assets/googleBtn.png')}
-            title="Google SignIn"
+            title="Google Login"
             onPress={() => googleSignin()}
           /> : <></>}
         </View>
