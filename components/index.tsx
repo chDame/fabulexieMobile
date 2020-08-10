@@ -8,7 +8,7 @@ import translate, {setLocale, getLocale} from '../services/i18n';
 import informationService from '../services/InformationService';
 
 export const Container = (props:any) => (
-  <View style={[styles.container, props.style]} {...props} />
+  <View style={[styles.container, props.customStyle]} {...props} />
 )
 
 export const ScrollContainer = (props:any) => (
@@ -154,14 +154,27 @@ export const BtnBlock = (props:any) => (
   <BtnPrimary containerStyle={{width: '100%', marginLeft: 0}} {...props} />
 )
 
-export const SocialSignBtn = (props:any) => (
+export const GoogleSignBtn = (props:any) => (
   
-  <TouchableOpacity onPress={props.onPress} style={btnStyles.btnGoogle}>
+  <TouchableOpacity onPress={props.onPress} style={btnStyles.btnSocial}>
     <Image
-      style={{ width: 40, height: 40, margin:5 }}
+      style={{ width: 40, height: 40, margin:1 }}
       source={props.image}
     />
-    <Text style={btnStyles.btnGoogleText}>{props.title} </Text>
+    <Text style={btnStyles.btnSocialText}>{props.title} </Text>
+  </TouchableOpacity>
+  
+)
+
+export const SocialSignBtn = (props:any) => (
+  
+  <TouchableOpacity onPress={props.onPress} style={[btnStyles.btnSocial, {backgroundColor: props.bgColor}]}>
+    <Image
+      style={{ backgroundColor: "white", width: 40, height: 40, margin:1,
+      borderRadius: 2, }}
+      source={props.image}
+    />
+    <Text style={btnStyles.btnSocialText}>{props.title} </Text>
   </TouchableOpacity>
   
 )

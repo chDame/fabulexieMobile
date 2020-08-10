@@ -31,6 +31,7 @@ export const fr = {
    PROFILE_letterRule: 'Règle pour les lettres',
    PROFILE_syllabeRule: 'Séparer les syllabes',
    PROFILE_characters: 'Caractères',
+   PROFILE_separator: 'Séparateur',
    PROFILE_italic: 'Italique',
    PROFILE_bold: 'Gras',
    PROFILE_underline: 'Souligné',

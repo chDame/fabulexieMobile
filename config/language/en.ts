@@ -31,6 +31,7 @@ export const en = {
    PROFILE_letterRule: 'Rule for letters',
    PROFILE_syllabeRule: 'Split syllabes',
    PROFILE_characters: 'Characters',
+   PROFILE_separator: 'Separator',
    PROFILE_italic: 'Italic',
    PROFILE_bold: 'Bold',
    PROFILE_underline: 'Underlined',

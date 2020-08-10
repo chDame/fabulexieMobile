@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 
 import {RootState} from '../../store/rootReducer';
 
-import { Container, LocaleSelector, Logo, AlertError, BtnBlock, Password, InputText, IconLink, Link, SocialSignBtn } from '../../components';
+import { Container, LocaleSelector, Logo, AlertError, BtnBlock, Password, InputText, IconLink, Link, SocialSignBtn, GoogleSignBtn } from '../../components';
 import { Modal, View } from 'react-native';
 import styles from '../../styles';
 import translate from '../../services/i18n';
@@ -54,7 +54,7 @@ function SignIn() {
     if (googleMobileClientId!='') {
       try {
         const { type, idToken } = await Google.logInAsync({
-          scopes: ['profile'],
+          scopes: [],
           androidClientId: googleMobileClientId, 
           androidStandaloneAppClientId: googleMobileClientId
         });
@@ -97,7 +97,7 @@ function SignIn() {
   };
 
   return (
-    <Container>
+    <Container customStyle={{justifyContent: "center"}}>
      
         <Logo source={require('../../assets/fabulexie.png')} />
         <IconLink action={() => setLocaleModal(true)} icon="md-globe">{translate('LOCALE')}</IconLink>
@@ -120,20 +120,22 @@ function SignIn() {
           icon="ios-log-in"
           title={translate('LOGIN_login')}
         />
-        <View style={{flexDirection: 'row', alignSelf: 'stretch'}}>
+       
           {(faceBookAppId!='') ?
           <SocialSignBtn
-            image={require('../../assets/fbBtn.png')}
-            title="Fb Login"
+            image={require('../../assets/facebookStd.png')}
+            bgColor="#395a9b"
+            title="Sign in with Facebook"
             onPress={() => facebookSignin()}
           /> : <></>}
           {(googleMobileClientId!='') ?
           <SocialSignBtn
-            image={require('../../assets/googleBtn.png')}
-            title="Google Login"
+            image={require('../../assets/googleBtnStd2.png')}
+            bgColor="#4285F4"
+            title="Sign in with Google"
             onPress={() => googleSignin()}
           /> : <></>}
-        </View>
+        
         <Link onPress={() => navigation.navigate('SignUp')} style={styles.mt1}>{translate('LOGIN_createAccount')}</Link>
         <Link onPress={() => dispatch(authService.offline())} style={styles.mt1}>{translate('LOGIN_offline')}</Link>
         

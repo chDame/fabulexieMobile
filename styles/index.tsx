@@ -116,20 +116,22 @@ export const btnStyles = StyleSheet.create({
     color: textColor,
     marginBottom: 10,
   },
-  btnGoogle: {
-    height: 50,
-    width: '46%',
+  btnSocial: {
+    height: 42,
+    alignSelf: 'stretch',
     margin: '2%',
-    backgroundColor: primary,
-    borderRadius: 5,
+    borderRadius: 3,
     justifyContent: "space-between",
     flexDirection: "row",
   },
-  btnGoogleText: {
-    color: "white",
+  btnSocialText: {
+    flex: 1,
     fontWeight: "700",
+    alignSelf: 'stretch',
+    textAlign: 'center',
     fontSize: 16,
-    marginTop: 14
+    marginTop: 10,
+    color: 'white'
   }
 });
 
