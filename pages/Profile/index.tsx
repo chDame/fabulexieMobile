@@ -97,7 +97,7 @@ function ProfileScreen() {
     setChange(change+1);
   } 
   const addRule = ():void => {
-    let length = profileEdit.letterRules?.push({lettersString:'', italic:false, bold:true, upperCase:false, underlined:false});
+    let length = profileEdit.letterRules?.push({lettersString:'', letters: [], italic:false, bold:true, upperCase:false, underlined:false});
     let idx = length-1;
     setRuleIdx(idx);
     setRule(profileEdit.letterRules[idx]);
@@ -208,7 +208,7 @@ function ProfileScreen() {
         style={{width:"100%"}}
         removeClippedSubviews={false}
         data={profileEdit?.letterRules}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={(item: ILetterRule, index: number) => `${index}`}
         renderItem={({item, index}) => (
           <RuleLetterPopper onPress={ () => {setRule(item); setRuleIdx(index); setRuleModal(true);}} rule={item}/>
         )}
