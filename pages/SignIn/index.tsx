@@ -38,16 +38,19 @@ function SignIn() {
   const [faceBookAppId, setFaceBookAppId] = useState('');
 
   useEffect(() => {
+    let mounted = true;
     authService.getConfig().then(resp => {
+      if (mounted) {
        if (resp.data.googleMobileClientId) {
           setGoogleMobileClientId(resp.data.googleMobileClientId);
         }
         if (resp.data.faceBookAppId) {
           setFaceBookAppId(resp.data.faceBookAppId);
         }
+      }
     });
     dispatch(authService.signInToken());
-    
+    return () => mounted = false;
   }, []);
 
   const googleSignin = async () => {

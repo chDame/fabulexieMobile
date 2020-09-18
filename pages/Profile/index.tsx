@@ -184,26 +184,6 @@ function ProfileScreen() {
           label={translate('PROFILE_syllabeRule')}
           />
 
-      <View 
-        style={{display: extraLineModal?"flex":"none"}}>
-            
-          <Radio
-              title={translate('PROFILE_2xLineSpace')}
-              checked={profileEdit.extraLineSpace==1}
-              onPress={() => setLineSpace(1)}
-            />
-            <Radio
-              title={translate('PROFILE_3xLineSpace')}
-              checked={profileEdit.extraLineSpace==2}
-              onPress={() => setLineSpace(2)}
-            />
-            <Radio
-              title={translate('PROFILE_4xLineSpace')}
-              checked={profileEdit.extraLineSpace==3}
-              onPress={() => setLineSpace(3)}
-            />
-      </View>
-
       <FlatList<ILetterRule> extraData={change}
         style={{width:"100%"}}
         removeClippedSubviews={false}
