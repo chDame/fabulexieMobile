@@ -41,16 +41,20 @@ export const SettingsLink = (props:any) => (
 )
 
 export const RuleLetterPopper = (props:any) => (
-    <TouchableOpacity onPress={props.onPress} style={switchStyles.container}>
-            <Text  style={{fontSize: 16, color: textColor}}>{translate('PROFILE_letterRule')} : </Text>
-            <Text 
-              style={{fontSize: 16, fontWeight: props.rule.bold?"bold":"normal", 
-                fontStyle: props.rule.italic?"italic":"normal",
-                textDecorationLine: props.rule.underlined?"underline":"none",
-                color: props.rule.color ? props.rule.color : 'black', 
-                backgroundColor: props.rule.backgroundColor ? props.rule.backgroundColor : 'transparent'
-                }}>{props.rule.lettersString}</Text>
-    </TouchableOpacity>
+    <RulePopper onPress={props.onPress} label={translate('PROFILE_letterRule')} value={props.rule.lettersString}/>
+)
+
+export const RulePopper = (props:any) => (
+  <TouchableOpacity onPress={props.onPress} style={switchStyles.container}>
+          <Text  style={{fontSize: 16, color: textColor}}>{props.label} : </Text>
+          <Text 
+            style={{fontSize: 16, fontWeight: props.rule.bold?"bold":"normal", 
+              fontStyle: props.rule.italic?"italic":"normal",
+              textDecorationLine: props.rule.underlined?"underline":"none",
+              color: props.rule.color ? props.rule.color : 'black', 
+              backgroundColor: props.rule.backgroundColor ? props.rule.backgroundColor : 'transparent'
+              }}>{props.value}</Text>
+  </TouchableOpacity>
 )
 
 export const Radio = (props:any) => (

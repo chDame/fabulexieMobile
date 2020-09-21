@@ -12,8 +12,6 @@ export interface ILetterRule extends IRule {
   lettersString?: string;
 }
 export interface ISyllabeRule extends IRule {
-  separator: string;
-  enabled: boolean;
 }
 
 export function instanceOfLetterRule(object: IRule): object is ILetterRule {
@@ -27,7 +25,9 @@ export interface IConfig {
   extraLineSpace: number|null;
 	extraWordSpace: number|null;
   letterRules: ILetterRule[];
-  syllabeRule: ISyllabeRule;
+  syllabe: boolean;
+  oddSyllabeRule: ISyllabeRule;
+  evenSyllabeRule: ISyllabeRule;
 }
 export interface IConfigResource {
   userConfig: IConfig;

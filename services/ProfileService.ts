@@ -17,6 +17,12 @@ export class ProfileService {
         }
       }
     }
+    if (!profile.evenSyllabeRule) {
+      profile.evenSyllabeRule = {}
+    }
+    if (!profile.oddSyllabeRule) {
+      profile.oddSyllabeRule = {}
+    }
     dispatch(setCurrentProfile(profile));
   }
 
